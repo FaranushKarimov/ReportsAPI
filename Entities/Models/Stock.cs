@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
-    public class Stock
+    public class Incomes
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -16,8 +16,7 @@ namespace Entities.Models
         [JsonPropertyName("Number")]
         public string? Number { get; set; }
         [JsonPropertyName("Date")]
-        public DateTime Date { get; set; }
-        [JsonPropertyName("LastChangeDate")]
+        public DateTime Date { get; set; } [JsonPropertyName("LastChangeDate")]
         public DateTime LastChangeDate { get; set; }
         [JsonPropertyName("SupplierArticle")]
         public string SupplierArticle { get; set; }

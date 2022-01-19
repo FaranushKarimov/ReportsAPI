@@ -12,7 +12,7 @@ namespace Entities.DataContexts
         {
 
         }
-        public DbSet<Stock> Stocks { get; set; }
+        public DbSet<Incomes> Stocks { get; set; }
         public DbSet<Marketplace> Marketplaces { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
