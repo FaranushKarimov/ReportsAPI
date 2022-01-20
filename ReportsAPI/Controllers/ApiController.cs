@@ -18,11 +18,6 @@ namespace ReportsAPI.Controllers
         {
             _db = db;
         }
-
-        public ApiController(DataContext db)
-        {
-            _db = db;
-        }
         
         
         /* Get list of stocks and deserialize them. */
