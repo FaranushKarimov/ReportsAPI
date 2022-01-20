@@ -3,18 +3,75 @@ using System;
 using Entities.DataContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ReportsAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220120060600_Migrationv2")]
+    partial class Migrationv2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.13");
+
+            modelBuilder.Entity("Entities.Models.Incomes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("BarCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateClose")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("IncomeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastChangeDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("MarketplaceId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Number")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SupplierArticle")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TechSize")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("TotalPrice")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("WarehouseName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("nmId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MarketplaceId");
+
+                    b.ToTable("Stocks");
+                });
 
             modelBuilder.Entity("Entities.Models.Marketplace", b =>
                 {
@@ -39,7 +96,7 @@ namespace ReportsAPI.Migrations
                     b.ToTable("Marketplaces");
                 });
 
-            modelBuilder.Entity("Entities.Models.Stock", b =>
+            modelBuilder.Entity("Entities.Models.ReportDetailByPeriod", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -51,8 +108,8 @@ namespace ReportsAPI.Migrations
                     b.Property<string>("brand_name")
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("commission_percent")
-                        .HasColumnType("REAL");
+                    b.Property<string>("commission_percent")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("delivery_amount")
                         .HasColumnType("INTEGER");
@@ -78,23 +135,23 @@ namespace ReportsAPI.Migrations
                     b.Property<DateTime>("order_dt")
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("ppvz_office_id")
-                        .HasColumnType("REAL");
+                    b.Property<int>("ppvz_office_id")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ppvz_office_name")
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("ppvz_reward")
-                        .HasColumnType("REAL");
+                    b.Property<string>("ppvz_reward")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("ppvz_supplier_id")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("ppvz_vw")
-                        .HasColumnType("REAL");
+                    b.Property<string>("ppvz_vw")
+                        .HasColumnType("TEXT");
 
-                    b.Property<double>("ppvz_vw_nds")
-                        .HasColumnType("REAL");
+                    b.Property<string>("ppvz_vw_nds")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("product_discount_for_report")
                         .HasColumnType("INTEGER");
@@ -105,14 +162,14 @@ namespace ReportsAPI.Migrations
                     b.Property<int>("realizationreport_id")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("retail_amount")
-                        .HasColumnType("REAL");
+                    b.Property<string>("retail_amount")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("retail_price")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("retail_price_withdisc_rub")
-                        .HasColumnType("REAL");
+                    b.Property<string>("retail_price_withdisc_rub")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("return_amount")
                         .HasColumnType("INTEGER");
@@ -132,8 +189,8 @@ namespace ReportsAPI.Migrations
                     b.Property<DateTime>("sale_dt")
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("sale_percent")
-                        .HasColumnType("REAL");
+                    b.Property<int>("sale_percent")
+                        .HasColumnType("INTEGER");
 
                     b.Property<long>("shk_id")
                         .HasColumnType("INTEGER");
@@ -155,7 +212,7 @@ namespace ReportsAPI.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Stocks");
+                    b.ToTable("ReportDetailByPeriods");
                 });
 
             modelBuilder.Entity("Entities.Models.Incomes", b =>
