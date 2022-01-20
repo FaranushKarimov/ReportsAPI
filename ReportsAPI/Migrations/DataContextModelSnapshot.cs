@@ -213,6 +213,107 @@ namespace ReportsAPI.Migrations
                     b.ToTable("ReportDetailByPeriods");
                 });
 
+            modelBuilder.Entity("Entities.Models.Sale", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("BarCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CountryName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DiscountPercent")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsRealization")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsStorno")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSupply")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastChangeDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Number")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PromoCodeDiscount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SupplierArticle")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TechSize")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("WarehouseName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("brand")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("category")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("finishedPrice")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("forPay")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("gNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("incomeID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("nmId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("oblastOkrugName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("odid")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("priceWithDisc")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("regionName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("saleID")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("spp")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("subject")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sales");
+                });
+
             modelBuilder.Entity("Entities.Models.Incomes", b =>
                 {
                     b.HasOne("Entities.Models.Marketplace", "Marketplace")

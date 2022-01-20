@@ -1,8 +1,5 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Entities.DataContexts
 {
@@ -13,6 +10,7 @@ namespace Entities.DataContexts
 
         }
         public DbSet<Incomes> Stocks { get; set; }
+        public DbSet<Sale> Sales { get; set; }
         public DbSet<Marketplace> Marketplaces { get; set; }
         public DbSet<ReportDetailByPeriod>ReportDetailByPeriods { get; set; }
 

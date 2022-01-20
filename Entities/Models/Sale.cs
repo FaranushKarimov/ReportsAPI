@@ -34,7 +34,7 @@ namespace Entities.Models
         [JsonPropertyName("IsRealization")]
         public bool IsRealization { get; set; }
         [JsonPropertyName("OrderId")]
-        public int? OrderId { get; set; }
+        public string OrderId { get; set; }
         [JsonPropertyName("PromoCodeDiscount")]
         public int PromoCodeDiscount { get; set; }
         [JsonPropertyName("WarehouseName")]
@@ -48,9 +48,9 @@ namespace Entities.Models
         [JsonPropertyName("incomeID")]
         public int incomeID { get; set; }
         [JsonPropertyName("saleID")]
-        public int saleID { get; set; }
+        public string saleID { get; set; }
         [JsonPropertyName("odid")]
-        public int odid { get; set; }
+        public Int64 odid { get; set; }
         [JsonPropertyName("spp")]
         public int spp { get; set; }
         [JsonPropertyName("forPay")]
