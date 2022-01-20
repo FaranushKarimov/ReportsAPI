@@ -1,21 +1,20 @@
 ﻿using System;
-using System.Text.Json.Serialization;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Entities.Models
 {
-    [Table("Incomes")]
-    public class Incomes
+    public class Sale
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         [JsonPropertyName("Id")]
         public int Id { get; set; }
-        [JsonPropertyName("IncomeId")]
-        public int IncomeId { get; set; }
         [JsonPropertyName("Number")]
-        public string? Number { get; set; }
+        public string Number { get; set; }
         [JsonPropertyName("Date")]
         public DateTime Date { get; set; }
         [JsonPropertyName("LastChangeDate")]
@@ -30,14 +29,19 @@ namespace Entities.Models
         public int Quantity { get; set; }
         [JsonPropertyName("TotalPrice")]
         public int TotalPrice { get; set; }
-        [JsonPropertyName("DateClose")]
-        public DateTime DateClose { get; set; }
+        [JsonPropertyName("DiscountPercent")]
+        public int DiscountPercent { get; set; }
+        [JsonPropertyName("IsSupply")]
+        public bool IsSupply { get; set; }
+        [JsonPropertyName("IsRealization")]
+        public bool IsRealization { get; set; }
+        [JsonPropertyName("OrderId")]
+        public int? OrderId { get; set; }
+        [JsonPropertyName("PromoCodeDiscount")]
+        public int PromoCodeDiscount { get; set; }
         [JsonPropertyName("WarehouseName")]
         public string WarehouseName { get; set; }
-        [JsonPropertyName("nmId")]
-        public int nmId { get; set; }
-        [JsonPropertyName("Status")]
-        public string Status { get; set; }
-        public Marketplace Marketplace { get; set; }
+        [JsonPropertyName("CountryName")]
+        public string CountryName { get; set; }
     }
 }

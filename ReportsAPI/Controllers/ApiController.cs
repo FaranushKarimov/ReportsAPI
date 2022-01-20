@@ -13,6 +13,10 @@ namespace ReportsAPI.Controllers
     public class ApiController : ControllerBase
     {
         private readonly DataContext _db;
+        public ApiController(DataContext db)
+        {
+            _db = db;
+        }
 
         /* Get list of stocks and deserialize them. */
         public async Task<List<Incomes>> GetStockAsync(string date = "2017-03-25T21%3A00%3A00.000Z", string key = "YzEyY2Y2MWMtYjViNC00MTM4LWIzZDEtYmUxOWNhMjc3NDA0") {
