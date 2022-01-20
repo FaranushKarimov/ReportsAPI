@@ -16,6 +16,61 @@ namespace ReportsAPI.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.13");
 
+            modelBuilder.Entity("Entities.Models.Incomes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("BarCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateClose")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("IncomeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastChangeDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("MarketplaceId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Number")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SupplierArticle")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TechSize")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("TotalPrice")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("WarehouseName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("nmId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MarketplaceId");
+
+                    b.ToTable("Incomes");
+                });
+
             modelBuilder.Entity("Entities.Models.Marketplace", b =>
                 {
                     b.Property<int>("Id")
@@ -39,7 +94,7 @@ namespace ReportsAPI.Migrations
                     b.ToTable("Marketplaces");
                 });
 
-            modelBuilder.Entity("Entities.Models.Stock", b =>
+            modelBuilder.Entity("Entities.Models.ReportDetailByPeriod", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -155,7 +210,7 @@ namespace ReportsAPI.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Stocks");
+                    b.ToTable("ReportDetailByPeriods");
                 });
 
             modelBuilder.Entity("Entities.Models.Incomes", b =>

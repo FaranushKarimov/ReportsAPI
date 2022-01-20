@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using System.Text.Json.Serialization;
 
 namespace Entities.Models
 {
@@ -28,7 +26,7 @@ namespace Entities.Models
         [JsonPropertyName("Quantity")]
         public int Quantity { get; set; }
         [JsonPropertyName("TotalPrice")]
-        public int TotalPrice { get; set; }
+        public decimal TotalPrice { get; set; }
         [JsonPropertyName("DiscountPercent")]
         public int DiscountPercent { get; set; }
         [JsonPropertyName("IsSupply")]
@@ -43,5 +41,35 @@ namespace Entities.Models
         public string WarehouseName { get; set; }
         [JsonPropertyName("CountryName")]
         public string CountryName { get; set; }
+        [JsonPropertyName("oblastOkrugName")]
+        public string oblastOkrugName { get; set; }
+        [JsonPropertyName("regionName")]
+        public string regionName { get; set; }
+        [JsonPropertyName("incomeID")]
+        public int incomeID { get; set; }
+        [JsonPropertyName("saleID")]
+        public int saleID { get; set; }
+        [JsonPropertyName("odid")]
+        public int odid { get; set; }
+        [JsonPropertyName("spp")]
+        public int spp { get; set; }
+        [JsonPropertyName("forPay")]
+        public decimal forPay { get; set; }
+        [JsonPropertyName("finishedPrice")]
+        public decimal finishedPrice { get; set; }
+        [JsonPropertyName("priceWithDisc")]
+        public decimal priceWithDisc { get; set; }
+        [JsonPropertyName("nmId")]
+        public int nmId { get; set; }
+        [JsonPropertyName("subject")]
+        public string subject { get; set; }
+        [JsonPropertyName("category")]
+        public string category { get; set; }
+        [JsonPropertyName("brand")]
+        public string brand { get; set; }
+        [JsonPropertyName("IsStorno")]
+        public bool IsStorno { get; set; }
+        [JsonPropertyName("gNumber")]
+        public string gNumber { get; set; }
     }
 }

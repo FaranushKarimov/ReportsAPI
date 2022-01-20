@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ReportsAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220120083723_ChangeDatabase")]
-    partial class ChangeDatabase
+    [Migration("20220120091511_FirstMigration")]
+    partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

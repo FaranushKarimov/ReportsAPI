@@ -1,3 +1,5 @@
+using Contracts;
+using System;
 using RestSharp;
 using Entities.Models;
 using Newtonsoft.Json;
@@ -14,14 +16,23 @@ namespace ReportsAPI.Controllers
     public class ApiController : ControllerBase
     {
         private readonly DataContext _db;
-        public ApiController(DataContext db)
+        private readonly ILoggerManager _logger;
+        public ApiController(DataContext db, ILoggerManager logger)
         {
             _db = db;
+            _logger = logger;
         }
         
         
+        [HttpGet]
+        [Route("GetRep")]
         /* Get list of stocks and deserialize them. */
-        public async Task<List<Incomes>> GetStockAsync(string date = "2017-03-25T21%3A00%3A00.000Z", string key = "YzEyY2Y2MWMtYjViNC00MTM4LWIzZDEtYmUxOWNhMjc3NDA0") {
+        public async Task<List<Incomes>> GetStockAsync(string key = "ODBhODE5NTYtODFjZC00MDc3LWIxMzEtMDgyNjRjMDEzNTVl") {
+
+            var date = Uri.EscapeDataString((DateTime.Now.AddDays(-100).ToString("yyyy-MM-ddTHH:ss:00.000Z")));
+            //var date = "2021-03-25T21%3A00%3A00.000Z";
+
+            _logger.LogError(date);
             var client = new RestClient($"https://suppliers-stats.wildberries.ru/api/v1/supplier/incomes?dateFrom={date}&key={key}");
             var request = new RestRequest($"https://suppliers-stats.wildberries.ru/api/v1/supplier/incomes?dateFrom={date}&key={key}", Method.Get);
             RestResponse response = await client.ExecuteAsync(request);
@@ -32,7 +43,7 @@ namespace ReportsAPI.Controllers
         }
 
         public async Task<List<ReportDetailByPeriod>> GetRep(
-            string key = "YzEyY2Y2MWMtYjViNC00MTM4LWIzZDEtYmUxOWNhMjc3NDA0", string datefrom = "2022-01-01",
+            string key = "ODBhODE5NTYtODFjZC00MDc3LWIxMzEtMDgyNjRjMDEzNTVl", string datefrom = "2022-01-01",
             string dateto = "2022-01-20")
         {
             var client =
