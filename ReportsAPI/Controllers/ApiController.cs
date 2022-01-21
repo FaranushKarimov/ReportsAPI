@@ -28,7 +28,7 @@ namespace ReportsAPI.Controllers
         [HttpGet]
         [Route("GetRep")]
         /* Get list of stocks and deserialize them. */
-        public async Task<List<Incomes>> GetStockAsync()
+        public async Task<List<Income>> GetStockAsync()
         {
 
             var date = Uri.EscapeDataString((DateTime.Now.ToString("yyyy-MM-ddTHH:ss:00.000Z")));
@@ -39,7 +39,7 @@ namespace ReportsAPI.Controllers
             var request = new RestRequest($"https://suppliers-stats.wildberries.ru/api/v1/supplier/incomes?dateFrom={date}&key={key}", Method.Get);
             RestResponse response = await client.ExecuteAsync(request);
 
-            var stock = JsonConvert.DeserializeObject<List<Incomes>>(response.Content);
+            var stock = JsonConvert.DeserializeObject<List<Income>>(response.Content);
 
             return stock;
         }
@@ -69,7 +69,7 @@ namespace ReportsAPI.Controllers
 
             foreach (var stock in stocks)
             {
-                _db.Stocks.Add(stock);
+                _db.Income.Add(stock);
             }
 
             await _db.SaveChangesAsync();

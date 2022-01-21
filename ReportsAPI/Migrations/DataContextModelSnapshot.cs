@@ -16,7 +16,7 @@ namespace ReportsAPI.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.13");
 
-            modelBuilder.Entity("Entities.Models.Incomes", b =>
+            modelBuilder.Entity("Entities.Models.Income", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -314,10 +314,10 @@ namespace ReportsAPI.Migrations
                     b.ToTable("Sales");
                 });
 
-            modelBuilder.Entity("Entities.Models.Incomes", b =>
+            modelBuilder.Entity("Entities.Models.Income", b =>
                 {
                     b.HasOne("Entities.Models.Marketplace", "Marketplace")
-                        .WithMany("Stocks")
+                        .WithMany("Incomes")
                         .HasForeignKey("MarketplaceId");
 
                     b.Navigation("Marketplace");
@@ -325,7 +325,7 @@ namespace ReportsAPI.Migrations
 
             modelBuilder.Entity("Entities.Models.Marketplace", b =>
                 {
-                    b.Navigation("Stocks");
+                    b.Navigation("Incomes");
                 });
 #pragma warning restore 612, 618
         }

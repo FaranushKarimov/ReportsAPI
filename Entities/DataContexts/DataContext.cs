@@ -9,7 +9,7 @@ namespace Entities.DataContexts
         {
 
         }
-        public DbSet<Incomes> Stocks { get; set; }
+        public DbSet<Income> Income { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<Marketplace> Marketplaces { get; set; }
         public DbSet<ReportDetailByPeriod>ReportDetailByPeriods { get; set; }
