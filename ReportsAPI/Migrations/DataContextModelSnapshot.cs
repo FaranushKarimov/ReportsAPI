@@ -314,6 +314,77 @@ namespace ReportsAPI.Migrations
                     b.ToTable("Sales");
                 });
 
+            modelBuilder.Entity("Entities.Models.Stock", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("BarCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Brand")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Category")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DaysOnSite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Discount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("InWayFromClient")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("InWayToClient")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("IsRealisation")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("IsSupply")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastChangeDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("NmId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("QuantityFull")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("QuantityNotInOrders")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SCCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SupplierArticle")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TechSize")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("WarehouseName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Stocks");
+                });
+
             modelBuilder.Entity("Entities.Models.Income", b =>
                 {
                     b.HasOne("Entities.Models.Marketplace", "Marketplace")

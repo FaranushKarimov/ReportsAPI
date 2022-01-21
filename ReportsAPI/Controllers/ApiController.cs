@@ -61,15 +61,15 @@ namespace ReportsAPI.Controllers
         }
 
         [HttpGet]
-        [Route("SaveStocks")]
+        [Route("SaveIncomes")]
         /* Save the stocks to the database */
-        public async Task SaveStocks()
+        public async Task SaveIncomes()
         {
             var stocks = await GetStockAsync();
 
             foreach (var stock in stocks)
             {
-                _db.Income.Add(stock);
+                _db.Incomes.Add(stock);
             }
 
             await _db.SaveChangesAsync();
