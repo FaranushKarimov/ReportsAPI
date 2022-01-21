@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Services
+﻿namespace Services
 {
     public class Class1
     {

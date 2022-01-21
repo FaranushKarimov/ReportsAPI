@@ -15,6 +15,9 @@ namespace Entities.DataContexts
         public DbSet<ReportDetailByPeriod>ReportDetailByPeriods { get; set; }
         public DbSet<Stock> Stocks { get; set; }
 
+        // Ozon stuff
+        public DbSet<TransactionResult> TransactionResults { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

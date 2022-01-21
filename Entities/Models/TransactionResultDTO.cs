@@ -1,10 +1,10 @@
 using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
-    public class PostingDTO
+    public class Posting
     {
         public string delivery_schema { get; set; }
         public string order_date { get; set; }
@@ -12,14 +12,19 @@ namespace Entities.Models
         public Int64 warehouse_id { get; set; }
     }
 
-    public class ItemDTO
+    public class Item
     {
+        public long transaction_id { get; set; }
+        [ForeignKey("transaction")]
+        public TransactionResult transaction { get; set; }
         public string name { get; set; }
         public int sku { get; set; }
     }
 
-    public class OperationDTO
+    [Table("TransactionResult")]
+    public class TransactionResult
     {
+        [Key]
         public long operation_id { get; set; }
         public string operation_type { get; set; }
         public string operation_date { get; set; }
@@ -32,16 +37,10 @@ namespace Entities.Models
         public string type { get; set; }
         public Posting posting { get; set; }
 
-        public List<Item> items { get; set; }
         // TODO: Find out the type of this objects
-        public List<object> services { get; set; }
-    }
-
-    [Table("TransactionResult")]
-    public class TransactionResultDTO
-    {
-        public List<OperationDTO> operations { get; set; }
-        public int page_count { get; set; }
-        public int row_count { get; set; }
+        // public List<object> services { get; set; }
+        //public int page_count { get; set; }
+        //public int row_count { get; set; }
     }
 }
+

@@ -28,7 +28,7 @@ namespace ReportsAPI.Controllers
         /* Get list of stocks and deserialize them. */
         [HttpGet]
         [Route("GetStocks")]
-        public async Task<List<Incomes>> GetStockAsync()
+        public async Task<List<Income>> GetStockAsync()
         {
 
             var date = Uri.EscapeDataString((DateTime.Now.AddDays(-100).ToString("yyyy-MM-ddTHH:ss:00.000Z")));

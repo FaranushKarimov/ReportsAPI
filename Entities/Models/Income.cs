@@ -15,7 +15,7 @@ namespace Entities.Models
         [JsonPropertyName("IncomeId")]
         public int IncomeId { get; set; }
         [JsonPropertyName("Number")]
-        public string? Number { get; set; }
+        public string Number { get; set; }
         [JsonPropertyName("Date")]
         public DateTime Date { get; set; }
         [JsonPropertyName("LastChangeDate")]

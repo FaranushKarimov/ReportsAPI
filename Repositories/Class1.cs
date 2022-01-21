@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Repositories
+﻿namespace Repositories
 {
     public class Class1
     {

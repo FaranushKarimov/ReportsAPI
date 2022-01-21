@@ -1,4 +1,3 @@
-using System;
 using Contracts;
 using RestSharp;
 using Entities.Models;
@@ -26,7 +25,7 @@ namespace ReportsAPI.Controllers
 
         [HttpPost]
         [Route("GetTransaction")]
-        public async Task<TransactionResult> GetTransactionAsync(string from = "2021-11-01T00:00:00.000Z" , string to = "2021-11-02T00:00:00.000Z", string transaction_type = "all")
+        public async Task<TransactionResult> GetTransactionsAsync(string from = "2021-11-01T00:00:00.000Z" , string to = "2021-11-02T00:00:00.000Z", string transaction_type = "all")
         {
             from = "2021-11-01T00:00:00.000Z";
             to = "2021-11-02T00:00:00.000Z";
@@ -52,10 +51,16 @@ namespace ReportsAPI.Controllers
                 page_size = 1000,
             });
             RestResponse response = await client.ExecuteAsync(request);
-            Console.WriteLine(response.Content);
 
             var report = JsonConvert.DeserializeObject<TransactionResult>(response.Content);
             return report;
+        }
+
+        [HttpGet]
+        [Route("SaveTransactions")]
+        public async Task SaveTransactions() {
+            var transactions = await GetTransactionsAsync();
+            _db.TransactionResults.Add(transactions);
         }
     }
 }
