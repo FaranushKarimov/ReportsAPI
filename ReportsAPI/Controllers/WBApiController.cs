@@ -25,13 +25,13 @@ namespace ReportsAPI.Controllers
         }
 
 
-        [HttpGet]
-        [Route("GetRep")]
         /* Get list of stocks and deserialize them. */
+        [HttpGet]
+        [Route("GetStocks")]
         public async Task<List<Incomes>> GetStockAsync()
         {
 
-            var date = Uri.EscapeDataString((DateTime.Now.ToString("yyyy-MM-ddTHH:ss:00.000Z")));
+            var date = Uri.EscapeDataString((DateTime.Now.AddDays(-100).ToString("yyyy-MM-ddTHH:ss:00.000Z")));
             //var date = "2021-03-25T21%3A00%3A00.000Z";
 
             _logger.LogError(date);
@@ -44,6 +44,8 @@ namespace ReportsAPI.Controllers
             return stock;
         }
 
+        [HttpGet]
+        [Route("GetRep")]
         public async Task<List<ReportDetailByPeriod>> GetRep([FromRoute] string datefrom = "2022-01-01", [FromRoute] string dateto = "2022-01-20")
         {
             var client =
@@ -121,6 +123,7 @@ namespace ReportsAPI.Controllers
             foreach (var report in reports)
             {
                 _db.ReportDetailByPeriods.Add(report);
+                
             }
 
             await _db.SaveChangesAsync();
