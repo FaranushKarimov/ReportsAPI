@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
+    [Table("Sales")]
     public class Sale
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

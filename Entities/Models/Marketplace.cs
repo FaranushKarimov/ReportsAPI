@@ -11,6 +11,6 @@ namespace Entities.Models
         public string TypeMarket { get; set; }
         public string ClientId { get; set; }
         public string ApiKey { get; set; }
-        public ICollection<Incomes> Stocks { get; set; }
+        public ICollection<Income> Incomes { get; set; }
     }
 }
