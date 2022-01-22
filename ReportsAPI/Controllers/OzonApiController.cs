@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using Entities.DataContexts;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ReportsAPI.Controllers
 {
@@ -53,7 +55,23 @@ namespace ReportsAPI.Controllers
             RestResponse response = await client.ExecuteAsync(request);
 
             var report = JsonConvert.DeserializeObject<TransactionResult>(response.Content);
+            var ops = new List<Operation>();
+            foreach(var op in report.result.operations)
+            {
+                ops.Add(op);
+            }
+            await _db.Operations.AddRangeAsync(ops);
+            await _db.SaveChangesAsync();
             return report;
+        }
+
+        [HttpGet("getasa")]
+        public IActionResult GetAsa()
+        {
+            var operations = _db.Operations.ToList();
+            var items = _db.Items.ToList();
+            var postings = _db.Postings.ToList();
+            return Ok(operations);
         }
 
         // [HttpGet]

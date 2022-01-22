@@ -21,7 +21,7 @@ namespace ReportsAPI.Extensions
             services.Configure<IISOptions>(options => { });
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration) =>
             services.AddDbContext<Entities.DataContexts.DataContext>(optionsAction =>
-                optionsAction.UseSqlite(configuration.GetConnectionString("SqliteCS"), ma => ma.MigrationsAssembly("ReportsAPI")).UseLazyLoadingProxies(false));
+                optionsAction.UseNpgsql(configuration.GetConnectionString("Default"), ma => ma.MigrationsAssembly("ReportsAPI")).UseLazyLoadingProxies(false));
         public static void ConfigureLoggerService(this IServiceCollection services) =>
            services.AddScoped<ILoggerManager, LoggerManager>();
     }

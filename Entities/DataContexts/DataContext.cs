@@ -14,6 +14,9 @@ namespace Entities.DataContexts
         public DbSet<Marketplace> Marketplaces { get; set; }
         public DbSet<ReportDetailByPeriod>ReportDetailByPeriods { get; set; }
         public DbSet<Stock> Stocks { get; set; }
+        public DbSet<Operation> Operations { get; set; }
+        public DbSet<Posting> Postings { get; set; }
+        public DbSet<Item> Items { get; set; }
 
         // Ozon stuff
         // public DbSet<Posting> Postings { get; set; }
