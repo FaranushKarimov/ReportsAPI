@@ -44,7 +44,7 @@ namespace Entities.Models
         public int PostingId { get; set; }
         [ForeignKey("PostingId")]
         public Posting posting { get; set; }
-        public List<Item> items { get; set; }
+        public List<OzonItemReport> items { get; set; }
         //public List<object> services { get; set; }
     }
 

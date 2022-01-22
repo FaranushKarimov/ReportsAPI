@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Entities.Models
 {
     [Table("Stocks")]
-    public class Stock
+    public class OzonStockReportReport
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
