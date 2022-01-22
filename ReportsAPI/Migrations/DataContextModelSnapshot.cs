@@ -385,47 +385,6 @@ namespace ReportsAPI.Migrations
                     b.ToTable("Stocks");
                 });
 
-            modelBuilder.Entity("Entities.Models.TransactionResult", b =>
-                {
-                    b.Property<long>("operation_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("accruals_for_sale")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("amount")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("delivery_charge")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("operation_date")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("operation_type")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("operation_type_name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("postringId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("return_delivery_charge")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("sale_commission")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("type")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("operation_id");
-
-                    b.ToTable("TransactionResult");
-                });
-
             modelBuilder.Entity("Entities.Models.Income", b =>
                 {
                     b.HasOne("Entities.Models.Marketplace", "Marketplace")

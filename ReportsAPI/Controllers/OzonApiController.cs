@@ -56,11 +56,11 @@ namespace ReportsAPI.Controllers
             return report;
         }
 
-        [HttpGet]
-        [Route("SaveTransactions")]
-        public async Task SaveTransactions() {
-            var transactions = await GetTransactionsAsync();
-            _db.TransactionResults.Add(transactions);
-        }
+        // [HttpGet]
+        // [Route("SaveTransactions")]
+        // public async Task SaveTransactions() {
+        //     var transactions = await GetTransactionsAsync();
+        //     _db.TransactionResults.Add(transactions);
+        // }
     }
 }
