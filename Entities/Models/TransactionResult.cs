@@ -4,23 +4,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
-    public class PostingDTO
+    public class Posting
     {
         public string delivery_schema { get; set; }
         public string order_date { get; set; }
         public string posting_number { get; set; }
-        public Int64 warehouse_id { get; set; }
+        public long warehouse_id { get; set; }
     }
 
-    public class ItemDTO
+    public class Item
     {
         public string name { get; set; }
         public int sku { get; set; }
     }
 
-    public class OperationDTO
+    public class Operation
     {
-        public long operation_id { get; set; }
+        public object operation_id { get; set; }
         public string operation_type { get; set; }
         public string operation_date { get; set; }
         public string operation_type_name { get; set; }
@@ -30,20 +30,21 @@ namespace Entities.Models
         public decimal sale_commission { get; set; }
         public decimal amount { get; set; }
         public string type { get; set; }
-
-        public int postingId { get; set; }
-        [ForeignKey("posting")]
         public Posting posting { get; set; }
-
         public List<Item> items { get; set; }
-        // TODO: Find out the type of this objects
         public List<object> services { get; set; }
     }
 
-    public class TransactionResultDTO
+    public class Result
     {
-        public List<OperationDTO> operations { get; set; }
-        public int page_count { get; set; }
-        public int row_count { get; set; }
+        public List<Operation> operations { get; set; }
+        public long page_count { get; set; }
+        public long row_count { get; set; }
     }
+
+    public class TransactionResult
+    {
+        public Result result { get; set; }
+    }
+
 }
