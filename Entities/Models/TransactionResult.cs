@@ -30,6 +30,9 @@ namespace Entities.Models
         public decimal sale_commission { get; set; }
         public decimal amount { get; set; }
         public string type { get; set; }
+
+        public int postingId { get; set; }
+        [ForeignKey("posting")]
         public Posting posting { get; set; }
 
         public List<Item> items { get; set; }
@@ -37,7 +40,6 @@ namespace Entities.Models
         public List<object> services { get; set; }
     }
 
-    [Table("TransactionResult")]
     public class TransactionResultDTO
     {
         public List<OperationDTO> operations { get; set; }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
+    [NotMapped]
     public class Posting
     {
         public string delivery_schema { get; set; }
@@ -14,9 +15,6 @@ namespace Entities.Models
 
     public class Item
     {
-        public long transaction_id { get; set; }
-        [ForeignKey("transaction")]
-        public TransactionResult transaction { get; set; }
         public string name { get; set; }
         public int sku { get; set; }
     }
@@ -35,6 +33,8 @@ namespace Entities.Models
         public decimal sale_commission { get; set; }
         public decimal amount { get; set; }
         public string type { get; set; }
+        public int postringId { get; set; }
+        [ForeignKey("posting")]
         public Posting posting { get; set; }
 
         // TODO: Find out the type of this objects
