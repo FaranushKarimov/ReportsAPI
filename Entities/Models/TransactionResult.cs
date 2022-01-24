@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Entities.Models
 {
@@ -15,6 +16,7 @@ namespace Entities.Models
         public string posting_number { get; set; }
         public long warehouse_id { get; set; }
 
+        [JsonIgnore]
         public ICollection<Operation> Operations { get; set; }
     }
 
