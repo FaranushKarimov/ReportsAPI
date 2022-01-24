@@ -8,9 +8,8 @@ namespace Entities.Models
     [Table("Incomes")]
     public class Income
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        [JsonPropertyName("Id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [JsonPropertyName("IncomeId")]
         public int IncomeId { get; set; }
@@ -38,6 +37,7 @@ namespace Entities.Models
         public int nmId { get; set; }
         [JsonPropertyName("Status")]
         public string Status { get; set; }
+        [JsonIgnore]
         public Marketplace Marketplace { get; set; }
     }
 }

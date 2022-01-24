@@ -27,7 +27,7 @@ namespace ReportsAPI.Controllers
         /* Get list of stocks and deserialize them. */
         [HttpGet]
         [Route("GetStocks")]
-        public async Task<List<Income>> GetStockAsync()
+        public async Task<List<Income>> GetIncomesAsync()
         {
 
             var date = Uri.EscapeDataString((DateTime.Now.AddDays(-100).ToString("yyyy-MM-ddTHH:ss:00.000Z")));
@@ -42,6 +42,19 @@ namespace ReportsAPI.Controllers
 
             return stock;
         }
+
+        [HttpPost]
+        [Route("SaveIncomes")]
+        /* Save the stocks to the database */
+        public async Task SaveIncomes()
+        {
+            var stocks = await GetIncomesAsync();
+
+            await _db.Incomes.AddRangeAsync(stocks);
+
+            await _db.SaveChangesAsync();
+        }
+
 
         [HttpGet]
         [Route("GetRep")]
@@ -61,22 +74,7 @@ namespace ReportsAPI.Controllers
             return report;
         }
 
-        [HttpGet]
-        [Route("SaveIncomes")]
-        /* Save the stocks to the database */
-        public async Task SaveIncomes()
-        {
-            var stocks = await GetStockAsync();
-
-            foreach (var stock in stocks)
-            {
-                _db.Incomes.Add(stock);
-            }
-
-            await _db.SaveChangesAsync();
-        }
-
-        [HttpGet]
+        [HttpPost]
         [Route("SaveSales")]
         /* Save the stocks to the database */
         public async Task SaveSales()
@@ -113,9 +111,9 @@ namespace ReportsAPI.Controllers
 
         }
 
-        [HttpGet]
-        [Route("GetReports")]
-        public async Task GetReports()
+        [HttpPost]
+        [Route("SaveReports")]
+        public async Task SaveReports()
         {
             var reports = await GetRep();
 
