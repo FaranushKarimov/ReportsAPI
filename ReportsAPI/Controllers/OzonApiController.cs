@@ -1,12 +1,12 @@
 using Contracts;
 using RestSharp;
+using System.Linq;
 using Entities.Models;
 using Newtonsoft.Json;
 using Entities.DataContexts;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ReportsAPI.Controllers
 {
@@ -56,8 +56,12 @@ namespace ReportsAPI.Controllers
 
             var report = JsonConvert.DeserializeObject<TransactionResult>(response.Content);
             var ops = new List<Operation>();
-            foreach(var op in report.result.operations)
+            foreach(var op in report.Result.Operations)
             {
+                //op.PostingId = op.Posting.Id;
+                // foreach (var item in op.items) {
+                //     item.OperationId = op.Id;
+                // }
                 ops.Add(op);
             }
             await _db.Operations.AddRangeAsync(ops);
@@ -72,6 +76,11 @@ namespace ReportsAPI.Controllers
             var items = _db.Items.ToList();
             var postings = _db.Postings.ToList();
             return Ok(operations);
+        }
+
+        [HttpGet("GetStocks")]
+        public List<StockResults> GetStocks() {
+            return new List<StockResults>();
         }
 
         // [HttpGet]
