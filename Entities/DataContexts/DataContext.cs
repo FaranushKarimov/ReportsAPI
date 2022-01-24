@@ -18,8 +18,7 @@ namespace Entities.DataContexts
         // Ozon stuff
         public DbSet<Operation> Operations { get; set; }
         public DbSet<Posting> Postings { get; set; }
-        public DbSet<OzonItemReport> Items { get; set; }
-        public DbSet<
+        public DbSet<Item> Items { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

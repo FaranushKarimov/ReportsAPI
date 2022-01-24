@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models {
+
     public class OzonStockReport
     {
         public int Id { get; set; }
