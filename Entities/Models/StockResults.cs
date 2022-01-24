@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models {
-
     public class OzonStockReport
     {
         [Key]
+        [JsonIgnore]
         public int Id { get; set; }
 
         [JsonPropertyName("not_for_sale")]
@@ -16,8 +16,7 @@ namespace Entities.Models {
         [JsonPropertyName("loss")]
         public int Loss { get; set; }
 
-        [JsonPropertyName("for_sale")]
-        public int ForSale { get; set; }
+        [JsonPropertyName("for_sale")] public int ForSale { get; set; }
 
         [JsonPropertyName("between_warehouses")]
         public int BetweenWarehouses { get; set; }
@@ -29,8 +28,11 @@ namespace Entities.Models {
     public class OzonItemReport
     {
         [Key]
+        [JsonIgnore]
+        public long Id { get; set; }
+
         [JsonPropertyName("offer_id")]
-        public string Id { get; set; }
+        public string Offer_id { get; set; }
 
         [JsonPropertyName("sku")]
         public int Sku { get; set; }
@@ -70,20 +72,27 @@ namespace Entities.Models {
 
     public class WhItem
     {
+        [Key]
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public long Id { get; set; }
 
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
         [JsonPropertyName("items")]
         public ICollection<OzonItemReport> Items { get; set; }
+
+        [ForeignKey("StockResults")]
+        public int StockResultsId { get; set; }
+        public OzonStockReport StockResults { get; set; }
     }
 
     public class TotalItem
     {
-        [JsonPropertyName("offer_id")]
+        [Key]
         public int Id { get; set; }
+        [JsonPropertyName("offer_id")]
+        public int OfferId { get; set; }
 
         [JsonPropertyName("sku")]
         public int Sku { get; set; }
@@ -117,10 +126,18 @@ namespace Entities.Models {
 
         [JsonPropertyName("stock")]
         public OzonStockReport Stock { get; set; }
+
+        [ForeignKey("StockResults")]
+        public long StockResultsId { get; set; }
+        public StockResults StockResults { get; set; }
     }
 
     public class StockResults
     {
+        [Key]
+        [JsonIgnore]
+        public long Id { get; set; }
+
         [JsonPropertyName("wh_items")]
         public ICollection<WhItem> WhItems { get; set; }
 

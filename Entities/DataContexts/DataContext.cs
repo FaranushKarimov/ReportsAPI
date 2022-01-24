@@ -7,18 +7,24 @@ namespace Entities.DataContexts
     {
         public DataContext(DbContextOptions<DataContext> options): base(options)
         {
-
+            Database.EnsureCreated();
         }
+
         public DbSet<Income> Incomes { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<Marketplace> Marketplaces { get; set; }
         public DbSet<ReportDetailByPeriod>ReportDetailByPeriods { get; set; }
-        public DbSet<OzonStockReportReport> Stocks { get; set; }
+        public DbSet<StockResults> Stocks { get; set; }
 
         // Ozon stuff
         public DbSet<Operation> Operations { get; set; }
         public DbSet<Posting> Postings { get; set; }
         public DbSet<Item> Items { get; set; }
+
+        // Stock
+        public DbSet<StockResults> StockResults { get; set; }
+        public DbSet<WhItem> WhItems { get; set; }
+        public DbSet<TotalItem> TotalItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

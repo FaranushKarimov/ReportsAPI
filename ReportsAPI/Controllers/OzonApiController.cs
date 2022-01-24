@@ -7,6 +7,7 @@ using Entities.DataContexts;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System;
 
 namespace ReportsAPI.Controllers
 {
@@ -23,13 +24,10 @@ namespace ReportsAPI.Controllers
             _logger = logger;
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetTransaction")]
         public async Task<TransactionResult> GetTransactionsAsync(string from = "2021-11-01T00:00:00.000Z", string to = "2021-11-02T00:00:00.000Z", string transaction_type = "all")
         {
-            from = "2021-11-01T00:00:00.000Z";
-            to = "2021-11-02T00:00:00.000Z";
-
             var client = new RestClient("https://api-seller.ozon.ru/v3/finance/transaction/list");
             var request = new RestRequest("https://api-seller.ozon.ru/v3/finance/transaction/list", Method.Post);
 
@@ -55,38 +53,65 @@ namespace ReportsAPI.Controllers
             RestResponse response = await client.ExecuteAsync(request);
 
             var report = JsonConvert.DeserializeObject<TransactionResult>(response.Content);
+            return report;
+        }
+
+        [HttpPost]
+        [Route("SaveTransaction")]
+        public async Task<IActionResult> SaveTransaction() {
+            var report = await GetTransactionsAsync();
             var ops = new List<Operation>();
             foreach (var op in report.Result.Operations)
             {
                 // Don't duplicate
+                // TODO: Make this faster
                 bool is_present = _db.Operations.Any(x => x.operation_id == op.operation_id);
                 if (!is_present)
                     ops.Add(op);
             }
-            await _db.Operations.AddRangeAsync(ops);
-            await _db.SaveChangesAsync();
+            try {
+                await _db.Operations.AddRangeAsync(ops);
+                await _db.SaveChangesAsync();
+            } catch(Exception ex) {
+                return BadRequest(ex.Message);
+            }
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("GetStocks")]
+        public async Task<StockResults> GetStocksAsync()
+        {
+            var client = new RestClient("https://api-seller.ozon.ru/v1/analytics/stock_on_warehouses");
+            var request = new RestRequest("https://api-seller.ozon.ru/v1/analytics/stock_on_warehouses", Method.Post);
+
+            request.AddHeader("Client-Id", Credentials.CLIENT_ID);
+            request.AddHeader("Api-Key", Credentials.API_KEY);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddJsonBody(new
+            {
+                limit = 1000000,
+                offset = 0
+            });
+
+            RestResponse response = await client.ExecuteAsync(request);
+            Console.WriteLine(response.StatusCode);
+
+            var report = JsonConvert.DeserializeObject<StockResults>(response.Content);
+
             return report;
         }
+        [HttpPost]
+        [Route("SaveStocks")]
+        public async Task<IActionResult> SaveStocksAsync() {
+            var report = await GetStocksAsync();
 
-        [HttpGet("getasa")]
-        public IActionResult GetAsa()
-        {
-            var operations = _db.Operations.ToList();
-            var items = _db.Items.ToList();
-            var postings = _db.Postings.ToList();
-            return Ok(operations);
-        }
-
-        [HttpGet("test")]
-        public int Test()
-        {
-            return _db.Operations.Count();
-        }
-
-        [HttpGet("GetStocks")]
-        public List<StockResults> GetStocks()
-        {
-            return new List<StockResults>();
+            try {
+                await _db.AddRangeAsync(report);
+            } catch (Exception ex) {
+                return BadRequest(ex.Message);
+            }
+            return Ok();
         }
 
         // [HttpGet]
