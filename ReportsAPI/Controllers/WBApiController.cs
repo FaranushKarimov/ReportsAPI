@@ -16,7 +16,6 @@ namespace ReportsAPI.Controllers
     {
         private readonly DataContext _db;
         private readonly ILoggerManager _logger;
-        private const string key = "ODBhODE5NTYtODFjZC00MDc3LWIxMzEtMDgyNjRjMDEzNTVl";
 
         public ApiController(DataContext db, ILoggerManager logger)
         {
@@ -35,8 +34,8 @@ namespace ReportsAPI.Controllers
             //var date = "2021-03-25T21%3A00%3A00.000Z";
 
             _logger.LogError(date);
-            var client = new RestClient($"https://suppliers-stats.wildberries.ru/api/v1/supplier/incomes?dateFrom={date}&key={key}");
-            var request = new RestRequest($"https://suppliers-stats.wildberries.ru/api/v1/supplier/incomes?dateFrom={date}&key={key}", Method.Get);
+            var client = new RestClient($"https://suppliers-stats.wildberries.ru/api/v1/supplier/incomes?dateFrom={date}&key={Credentials.WB_API_KEY}");
+            var request = new RestRequest($"https://suppliers-stats.wildberries.ru/api/v1/supplier/incomes?dateFrom={date}&key={Credentials.WB_API_KEY}", Method.Get);
             RestResponse response = await client.ExecuteAsync(request);
 
             var stock = JsonConvert.DeserializeObject<List<Income>>(response.Content);
@@ -50,10 +49,10 @@ namespace ReportsAPI.Controllers
         {
             var client =
                 new RestClient(
-                    $"https://suppliers-stats.wildberries.ru/api/v1/supplier/reportDetailByPeriod?key={key}&datefrom={datefrom}&dateto={dateto}");
+                    $"https://suppliers-stats.wildberries.ru/api/v1/supplier/reportDetailByPeriod?key={Credentials.WB_API_KEY}&datefrom={datefrom}&dateto={dateto}");
             var request =
                 new RestRequest(
-                    $"https://suppliers-stats.wildberries.ru/api/v1/supplier/reportDetailByPeriod?key={key}&datefrom={datefrom}&dateto={dateto}",
+                    $"https://suppliers-stats.wildberries.ru/api/v1/supplier/reportDetailByPeriod?key={Credentials.WB_API_KEY}&datefrom={datefrom}&dateto={dateto}",
                     Method.Get);
             RestResponse response = await client.ExecuteAsync(request);
 
@@ -101,10 +100,10 @@ namespace ReportsAPI.Controllers
 
             var client =
                 new RestClient(
-                    $"https://suppliers-stats.wildberries.ru/api/v1/supplier/sales?dateFrom={datefrom}&key={key}");
+                    $"https://suppliers-stats.wildberries.ru/api/v1/supplier/sales?dateFrom={datefrom}&key={Credentials.WB_API_KEY}");
             var request =
                 new RestRequest(
-                    $"https://suppliers-stats.wildberries.ru/api/v1/supplier/sales?dateFrom={datefrom}&key={key}",
+                    $"https://suppliers-stats.wildberries.ru/api/v1/supplier/sales?dateFrom={datefrom}&key={Credentials.WB_API_KEY}",
                     Method.Get);
             RestResponse response = await client.ExecuteAsync(request);
 

@@ -16,8 +16,6 @@ namespace ReportsAPI.Controllers
     {
         private readonly DataContext _db;
         private readonly ILoggerManager _logger;
-        private const string key = "ODBhODE5NTYtODFjZC00MDc3LWIxMzEtMDgyNjRjMDEzNTVl";
-        private const int client_id = 43445;
 
         public OzonApiController(DataContext db, ILoggerManager logger)
         {
@@ -27,20 +25,21 @@ namespace ReportsAPI.Controllers
 
         [HttpPost]
         [Route("GetTransaction")]
-        public async Task<TransactionResult> GetTransactionsAsync(string from = "2021-11-01T00:00:00.000Z" , string to = "2021-11-02T00:00:00.000Z", string transaction_type = "all")
+        public async Task<TransactionResult> GetTransactionsAsync(string from = "2021-11-01T00:00:00.000Z", string to = "2021-11-02T00:00:00.000Z", string transaction_type = "all")
         {
             from = "2021-11-01T00:00:00.000Z";
             to = "2021-11-02T00:00:00.000Z";
 
             var client = new RestClient("https://api-seller.ozon.ru/v3/finance/transaction/list");
             var request = new RestRequest("https://api-seller.ozon.ru/v3/finance/transaction/list", Method.Post);
-            request.AddHeader("Client-Id", "43445");
-            request.AddHeader("Api-Key", "6ca743d9-3441-47fb-b4ce-d7b531fbb31b");
-            request.AddHeader("Content-Type", "application/json");
 
+            request.AddHeader("Client-Id", Credentials.CLIENT_ID);
+            request.AddHeader("Api-Key", Credentials.API_KEY);
+            request.AddHeader("Content-Type", "application/json");
             request.AddJsonBody(new
             {
-                filter = new {
+                filter = new
+                {
                     date = new
                     {
                         from = from,
@@ -52,17 +51,17 @@ namespace ReportsAPI.Controllers
                 page = 1,
                 page_size = 1000,
             });
+
             RestResponse response = await client.ExecuteAsync(request);
 
             var report = JsonConvert.DeserializeObject<TransactionResult>(response.Content);
             var ops = new List<Operation>();
-            foreach(var op in report.Result.Operations)
+            foreach (var op in report.Result.Operations)
             {
-                //op.PostingId = op.Posting.Id;
-                // foreach (var item in op.items) {
-                //     item.OperationId = op.Id;
-                // }
-                ops.Add(op);
+                // Don't duplicate
+                bool is_present = _db.Operations.Any(x => x.operation_id == op.operation_id);
+                if (!is_present)
+                    ops.Add(op);
             }
             await _db.Operations.AddRangeAsync(ops);
             await _db.SaveChangesAsync();
@@ -78,8 +77,15 @@ namespace ReportsAPI.Controllers
             return Ok(operations);
         }
 
+        [HttpGet("test")]
+        public int Test()
+        {
+            return _db.Operations.Count();
+        }
+
         [HttpGet("GetStocks")]
-        public List<StockResults> GetStocks() {
+        public List<StockResults> GetStocks()
+        {
             return new List<StockResults>();
         }
 

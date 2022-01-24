@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Models {
 
     public class OzonStockReport
     {
+        [Key]
         public int Id { get; set; }
 
         [JsonPropertyName("not_for_sale")]
@@ -26,10 +28,9 @@ namespace Entities.Models {
 
     public class OzonItemReport
     {
-        public int Id { get; set; }
-
+        [Key]
         [JsonPropertyName("offer_id")]
-        public string OfferId { get; set; }
+        public string Id { get; set; }
 
         [JsonPropertyName("sku")]
         public int Sku { get; set; }
@@ -81,10 +82,8 @@ namespace Entities.Models {
 
     public class TotalItem
     {
-        public int Id { get; set; }
-
         [JsonPropertyName("offer_id")]
-        public string OfferId { get; set; }
+        public int Id { get; set; }
 
         [JsonPropertyName("sku")]
         public int Sku { get; set; }
