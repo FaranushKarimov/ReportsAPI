@@ -3,132 +3,81 @@ using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Entities.Models {
-    public class OzonStockReport
+namespace Entities.Models
+{
+    public class Stock
     {
         [Key]
         [JsonIgnore]
         public int Id { get; set; }
 
-        [JsonPropertyName("not_for_sale")]
-        public int NotForSale { get; set; }
-
-        [JsonPropertyName("loss")]
-        public int Loss { get; set; }
-
-        [JsonPropertyName("for_sale")] public int ForSale { get; set; }
-
-        [JsonPropertyName("between_warehouses")]
-        public int BetweenWarehouses { get; set; }
-
-        [JsonPropertyName("shipped")]
-        public int Shipped { get; set; }
+        public int not_for_sale { get; set; }
+        public int loss { get; set; }
+        public int for_sale { get; set; }
+        public int between_warehouses { get; set; }
+        public int shipped { get; set; }
     }
 
-    public class OzonItemReport
+    public class StockItem
     {
         [Key]
         [JsonIgnore]
-        public long Id { get; set; }
+        public int Id { get; set; }
 
-        [JsonPropertyName("offer_id")]
-        public string Offer_id { get; set; }
-
-        [JsonPropertyName("sku")]
-        public int Sku { get; set; }
-
-        [JsonPropertyName("title")]
-        public string Title { get; set; }
-
-        [JsonPropertyName("category")]
-        public string Category { get; set; }
-
-        [JsonPropertyName("discounted")]
-        public string Discounted { get; set; }
-
-        [JsonPropertyName("barcode")]
-        public string Barcode { get; set; }
-
-        [JsonPropertyName("length")]
-        public double Length { get; set; }
-
-        [JsonPropertyName("width")]
-        public double Width { get; set; }
-
-        [JsonPropertyName("height")]
-        public double Height { get; set; }
-
-        [JsonPropertyName("volume")]
-        public double Volume { get; set; }
-
-        [JsonPropertyName("weight")]
-        public int Weight { get; set; }
+        public string offer_id { get; set; }
+        public int sku { get; set; }
+        public string title { get; set; }
+        public string category { get; set; }
+        public string discounted { get; set; }
+        public string barcode { get; set; }
+        public double length { get; set; }
+        public double width { get; set; }
+        public double height { get; set; }
+        public double volume { get; set; }
+        public int weight { get; set; }
 
         [ForeignKey("Stock")]
-        public int OzonStockReportId { get; set; }
-        [JsonPropertyName("stock")]
-        public OzonStockReport Stock { get; set; }
+        public int StockId { get; set; }
+        public Stock stock { get; set; }
     }
 
     public class WhItem
     {
         [Key]
-        [JsonPropertyName("id")]
-        public long Id { get; set; }
+        public string id { get; set; }
 
-        [JsonPropertyName("name")]
-        public string Name { get; set; }
-
-        [JsonPropertyName("items")]
-        public ICollection<OzonItemReport> Items { get; set; }
+        public string name { get; set; }
+        public List<StockItem> items { get; set; }
 
         [ForeignKey("StockResults")]
         public int StockResultsId { get; set; }
-        public OzonStockReport StockResults { get; set; }
+        public StockResults StockResults { get; set; }
     }
 
     public class TotalItem
     {
         [Key]
+        [JsonIgnore]
         public int Id { get; set; }
-        [JsonPropertyName("offer_id")]
-        public int OfferId { get; set; }
 
-        [JsonPropertyName("sku")]
-        public int Sku { get; set; }
+        public string offer_id { get; set; }
+        public int sku { get; set; }
+        public string title { get; set; }
+        public string category { get; set; }
+        public string discounted { get; set; }
+        public string barcode { get; set; }
+        public double length { get; set; }
+        public double width { get; set; }
+        public double height { get; set; }
+        public double volume { get; set; }
+        public int weight { get; set; }
 
-        [JsonPropertyName("title")]
-        public string Title { get; set; }
-
-        [JsonPropertyName("category")]
-        public string Category { get; set; }
-
-        [JsonPropertyName("discounted")]
-        public string Discounted { get; set; }
-
-        [JsonPropertyName("barcode")]
-        public string Barcode { get; set; }
-
-        [JsonPropertyName("length")]
-        public double Length { get; set; }
-
-        [JsonPropertyName("width")]
-        public double Width { get; set; }
-
-        [JsonPropertyName("height")]
-        public double Height { get; set; }
-
-        [JsonPropertyName("volume")]
-        public double Volume { get; set; }
-
-        [JsonPropertyName("weight")]
-        public int Weight { get; set; }
-
-        [JsonPropertyName("stock")]
-        public OzonStockReport Stock { get; set; }
+        [ForeignKey("Stock")]
+        public int StockId { get; set; }
+        public Stock Stock { get; set; }
 
         [ForeignKey("StockResults")]
-        public long StockResultsId { get; set; }
+        public int StockResultsId { get; set; }
         public StockResults StockResults { get; set; }
     }
 
@@ -136,15 +85,10 @@ namespace Entities.Models {
     {
         [Key]
         [JsonIgnore]
-        public long Id { get; set; }
+        public int Id { get; set; }
 
-        [JsonPropertyName("wh_items")]
-        public ICollection<WhItem> WhItems { get; set; }
-
-        [JsonPropertyName("total_items")]
-        public ICollection<TotalItem> TotalItems { get; set; }
-
-        [JsonPropertyName("timestamp")]
-        public string Timestamp { get; set; }
+        public List<WhItem> wh_items { get; set; }
+        public List<TotalItem> total_items { get; set; }
+        public string timestamp { get; set; }
     }
 }

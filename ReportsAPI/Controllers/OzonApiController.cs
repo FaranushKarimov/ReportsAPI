@@ -107,9 +107,19 @@ namespace ReportsAPI.Controllers
             var report = await GetStocksAsync();
 
             try {
-                await _db.AddRangeAsync(report);
+                // foreach (var wh_item in report.wh_items) {
+                //     _db.WhItems.Add(wh_item);
+                // }
+                //
+                // foreach (var total in report.total_items) {
+                //     _db.TotalItems.Add(total);
+                // }
+
+                await _db.StockResults.AddRangeAsync(report);
             } catch (Exception ex) {
                 return BadRequest(ex.Message);
+            } finally {
+                await _db.SaveChangesAsync();
             }
             return Ok();
         }

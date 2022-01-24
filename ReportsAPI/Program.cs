@@ -15,7 +15,7 @@ namespace ReportsAPI
             using (var scope = host.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<DataContext>();
-                // await context.Database.MigrateAsync();
+                await context.Database.MigrateAsync();
             }
             await host.RunAsync();
         }
