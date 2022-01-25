@@ -6,6 +6,7 @@ ReportsAPI/ReportsAPI/Extensions/ServiceExtensions.cs
 ReportsAPI/appsettings.json
 ReportsAPI/Credentials.cs
 ReportsAPI/Extensions/ServiceExtensions.cs
+ReportsAPI/appsettings.json
 
 Entities/Migrations/*
 # User-specific files
