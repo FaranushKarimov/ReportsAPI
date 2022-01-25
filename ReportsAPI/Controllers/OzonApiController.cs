@@ -107,14 +107,6 @@ namespace ReportsAPI.Controllers
             var report = await GetStocksAsync();
 
             try {
-                // foreach (var wh_item in report.wh_items) {
-                //     _db.WhItems.Add(wh_item);
-                // }
-                //
-                // foreach (var total in report.total_items) {
-                //     _db.TotalItems.Add(total);
-                // }
-
                 await _db.StockResults.AddRangeAsync(report);
             } catch (Exception ex) {
                 return BadRequest(ex.Message);
@@ -124,11 +116,43 @@ namespace ReportsAPI.Controllers
             return Ok();
         }
 
-        // [HttpGet]
-        // [Route("SaveTransactions")]
-        // public async Task SaveTransactions() {
-        //     var transactions = await GetTransactionsAsync();
-        //     _db.TransactionResults.Add(transactions);
-        // }
+        [HttpGet]
+        [Route("GetPostings")]
+        public async Task<PostingResult> GetPostings(string dir = "ASC",
+            string since = "2021-09-01T00:00:00.000Z",
+            string to = "2021-11-17T10:44:12.828Z",
+            string status = "",
+            int limit = 1000,
+            int offset = 0,
+            bool translit = true)
+        {
+            var client = new RestClient("https://api-seller.ozon.ru/v2/posting/fbo/list");
+            var request = new RestRequest("https://api-seller.ozon.ru/v2/posting/fbo/list", Method.Post);
+
+            request.AddHeader("Client-Id", Credentials.CLIENT_ID);
+            request.AddHeader("Api-Key", Credentials.API_KEY);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddJsonBody(new
+            {
+                dir = "",
+                filter = new {
+                    since = since,
+                    status = status,
+                    to = to,
+                },
+                limit = limit,
+                offset = offset,
+                translit = translit,
+                with = new {
+                    analytics_data = true,
+                    financial_data = true,
+                },
+            });
+
+            RestResponse response = await client.ExecuteAsync(request);
+            var report = JsonConvert.DeserializeObject<PostingResult>(response.Content);
+
+            return report;
+        }
     }
 }
