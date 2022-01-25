@@ -7,7 +7,7 @@ namespace Entities.DataContexts
     {
         public DataContext(DbContextOptions<DataContext> options): base(options)
         {
-            //Database.EnsureCreated();
+            Database.EnsureCreated();
         }
 
         public DbSet<Income> Incomes { get; set; }
