@@ -1,10 +1,29 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
+    public class Action
+    {
+        [Key]
+        [JsonIgnore]
+        public int Id { get; set; }
+        public string action { get; set; }
+
+        [ForeignKey("Product")]
+        public int ProductId { get; set; }
+        public Product Product { get; set; }
+    }
+
     public class Product
     {
+        [Key]
+        [JsonIgnore]
+        public int Id { get; set; }
+
         public int sku { get; set; }
         public string name { get; set; }
         public int quantity { get; set; }
@@ -18,7 +37,7 @@ namespace Entities.Models
         public decimal old_price { get; set; }
         public decimal total_discount_value { get; set; }
         public decimal total_discount_percent { get; set; }
-        public List<string> actions { get; set; }
+        //public List<Action> actions { get; set; }
         // public object picking { get; set; }
         public decimal? client_price { get; set; }
         public ItemServices item_services { get; set; }
@@ -26,6 +45,10 @@ namespace Entities.Models
 
     public class AnalyticsData
     {
+        [Key]
+        [JsonIgnore]
+        public int Id { get; set; }
+
         public string region { get; set; }
         public string city { get; set; }
         public string delivery_type { get; set; }
@@ -38,6 +61,10 @@ namespace Entities.Models
 
     public class ItemServices
     {
+        [Key]
+        [JsonIgnore]
+        public int Id { get; set; }
+
         public decimal marketplace_service_item_fulfillment { get; set; }
         public decimal marketplace_service_item_pickup { get; set; }
         public decimal marketplace_service_item_dropoff_pvz { get; set; }
@@ -53,6 +80,10 @@ namespace Entities.Models
 
     public class PostingServices
     {
+        [Key]
+        [JsonIgnore]
+        public int Id { get; set; }
+
         public decimal marketplace_service_item_fulfillment { get; set; }
         public decimal marketplace_service_item_pickup { get; set; }
         public decimal marketplace_service_item_dropoff_pvz { get; set; }
@@ -68,12 +99,20 @@ namespace Entities.Models
 
     public class FinancialData
     {
+        [Key]
+        [JsonIgnore]
+        public int Id { get; set; }
+
         public List<Product> products { get; set; }
         public PostingServices posting_services { get; set; }
     }
 
     public class PostingResultResult
     {
+        [Key]
+        [JsonIgnore]
+        public int Id { get; set; }
+
         public int order_id { get; set; }
         public string order_number { get; set; }
         public string posting_number { get; set; }
@@ -89,6 +128,10 @@ namespace Entities.Models
 
     public class PostingResult
     {
+        [Key]
+        [JsonIgnore]
+        public int Id { get; set; }
+
         public List<PostingResultResult> result { get; set; }
     }
 }

@@ -154,5 +154,20 @@ namespace ReportsAPI.Controllers
 
             return report;
         }
+
+        [HttpPost]
+        [Route("SavePostings")]
+        public async Task<IActionResult> SavePostings() {
+            var report = await GetPostings();
+
+            try {
+                await _db.PostingResults.AddRangeAsync(report);
+            } catch (Exception ex) {
+                return BadRequest(ex.Message);
+            } finally {
+                await _db.SaveChangesAsync();
+            }
+            return Ok();
+        }
     }
 }
