@@ -8,6 +8,7 @@ using Entities.DataContexts;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Net;
 
 namespace ReportsAPI.Controllers
 {
@@ -28,8 +29,6 @@ namespace ReportsAPI.Controllers
         [Route("GetTransaction")]
         public async Task<TransactionResult> GetTransactionsAsync(string from = "2021-11-01T00:00:00.000Z", string to = "2021-11-02T00:00:00.000Z", string transaction_type = "all")
         {
-            // from = 
-
             var client = new RestClient("https://api-seller.ozon.ru/v3/finance/transaction/list");
             var request = new RestRequest("https://api-seller.ozon.ru/v3/finance/transaction/list", Method.Post);
 
@@ -54,13 +53,18 @@ namespace ReportsAPI.Controllers
 
             RestResponse response = await client.ExecuteAsync(request);
 
+            if (response.StatusCode != HttpStatusCode.OK) {
+                throw new Exception(response.StatusDescription);
+            }
+
             var report = JsonConvert.DeserializeObject<TransactionResult>(response.Content);
             return report;
         }
 
         [HttpPost]
         [Route("SaveTransaction")]
-        public async Task<IActionResult> SaveTransaction() {
+        public async Task<IActionResult> SaveTransaction()
+        {
             var report = await GetTransactionsAsync();
             var ops = new List<Operation>();
             foreach (var op in report.Result.Operations)
@@ -71,10 +75,13 @@ namespace ReportsAPI.Controllers
                 if (!is_present)
                     ops.Add(op);
             }
-            try {
+            try
+            {
                 await _db.Operations.AddRangeAsync(ops);
                 await _db.SaveChangesAsync();
-            } catch(Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
             return Ok();
@@ -97,7 +104,10 @@ namespace ReportsAPI.Controllers
             });
 
             RestResponse response = await client.ExecuteAsync(request);
-            Console.WriteLine(response.StatusCode);
+
+            if (response.StatusCode != HttpStatusCode.OK) {
+                throw new Exception(response.StatusDescription);
+            }
 
             var report = JsonConvert.DeserializeObject<StockResults>(response.Content);
 
@@ -105,16 +115,19 @@ namespace ReportsAPI.Controllers
         }
         [HttpPost]
         [Route("SaveStocks")]
-        public async Task<IActionResult> SaveStocksAsync() {
+        public async Task<IActionResult> SaveStocksAsync()
+        {
             var report = await GetStocksAsync();
 
-            try {
+            try
+            {
                 await _db.StockResults.AddRangeAsync(report);
-            } catch (Exception ex) {
-                return BadRequest(ex.Message);
-            } finally {
-                await _db.SaveChangesAsync();
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            await _db.SaveChangesAsync();
             return Ok();
         }
 
@@ -137,7 +150,8 @@ namespace ReportsAPI.Controllers
             request.AddJsonBody(new
             {
                 dir = "",
-                filter = new {
+                filter = new
+                {
                     since = since,
                     status = status,
                     to = to,
@@ -145,13 +159,17 @@ namespace ReportsAPI.Controllers
                 limit = limit,
                 offset = offset,
                 translit = translit,
-                with = new {
+                with = new
+                {
                     analytics_data = true,
                     financial_data = true,
                 },
             });
 
             RestResponse response = await client.ExecuteAsync(request);
+            if (response.StatusCode != HttpStatusCode.OK) {
+                throw new Exception(response.StatusDescription);
+            }
             var report = JsonConvert.DeserializeObject<PostingResult>(response.Content);
 
             return report;
@@ -159,17 +177,29 @@ namespace ReportsAPI.Controllers
 
         [HttpPost]
         [Route("SavePostings")]
-        public async Task<IActionResult> SavePostings() {
+        public async Task<IActionResult> SavePostings()
+        {
             var report = await GetPostings();
 
-            try {
+            try
+            {
                 await _db.PostingResults.AddRangeAsync(report);
-            } catch (Exception ex) {
-                return BadRequest(ex.Message);
-            } finally {
-                await _db.SaveChangesAsync();
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            await _db.SaveChangesAsync();
             return Ok();
+        }
+
+        [HttpPost]
+        [Route("SaveAll")]
+        public async Task SaveAllAsync()
+        {
+            await SaveTransaction();
+            await SaveStocksAsync();
+            await SavePostings();
         }
     }
 }

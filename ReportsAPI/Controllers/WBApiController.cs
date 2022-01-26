@@ -1,13 +1,14 @@
 using System;
 using Contracts;
 using RestSharp;
+using System.Net;
 using Entities.Models;
 using Newtonsoft.Json;
+using ReportsAPI.Models;
 using Entities.DataContexts;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using ReportsAPI.Models;
 
 namespace ReportsAPI.Controllers
 {
@@ -29,10 +30,8 @@ namespace ReportsAPI.Controllers
         [Route("GetIncomes")]
         public async Task<List<Income>> GetIncomesAsync()
         {
-
             var date = Uri.EscapeDataString((DateTime.Now.ToString("yyyy-MM-ddT00:00:00.000Z")));
 
-            _logger.LogError(date);
             var client = new RestClient($"https://suppliers-stats.wildberries.ru/api/v1/supplier/incomes?dateFrom={date}&key={Credentials.WB_API_KEY}");
             var request = new RestRequest($"https://suppliers-stats.wildberries.ru/api/v1/supplier/incomes?dateFrom={date}&key={Credentials.WB_API_KEY}", Method.Get);
             RestResponse response = await client.ExecuteAsync(request);
@@ -55,6 +54,26 @@ namespace ReportsAPI.Controllers
         }
 
 
+        [HttpGet]
+        [Route("GetSales")]
+        public async Task<List<Sale>> GetSalesAsync()
+        {
+            //var datefrom = Uri.EscapeDataString((DateTime.Now.ToString("yyyy-MM-ddTHH:ss:00.000Z")));
+            var datefrom = "2022-01-01T21:00:00.000Zl";
+
+            var client = new RestClient( $"https://suppliers-stats.wildberries.ru/api/v1/supplier/sales?dateFrom={datefrom}&key={Credentials.WB_API_KEY}");
+            var request = new RestRequest( $"https://suppliers-stats.wildberries.ru/api/v1/supplier/sales?dateFrom={datefrom}&key={Credentials.WB_API_KEY}", Method.Get);
+            RestResponse response = await client.ExecuteAsync(request);
+            if (true) {
+                Console.WriteLine("ERROR: " + response.StatusDescription);
+            }
+
+            var report = JsonConvert.DeserializeObject<List<Sale>>(response.Content);
+
+            return report;
+
+        }
+
         [HttpPost]
         [Route("SaveSales")]
         /* Save the stocks to the database */
@@ -71,30 +90,8 @@ namespace ReportsAPI.Controllers
         }
 
         [HttpGet]
-        [Route("GetSales")]
-        public async Task<List<Sale>> GetSalesAsync()
-        {
-            //var datefrom = Uri.EscapeDataString((DateTime.Now.ToString("yyyy-MM-ddTHH:ss:00.000Z")));
-            var datefrom = "2022-01-01T21:00:00.000Zl";
-
-            var client =
-                new RestClient(
-                    $"https://suppliers-stats.wildberries.ru/api/v1/supplier/sales?dateFrom={datefrom}&key={Credentials.WB_API_KEY}");
-            var request =
-                new RestRequest(
-                    $"https://suppliers-stats.wildberries.ru/api/v1/supplier/sales?dateFrom={datefrom}&key={Credentials.WB_API_KEY}",
-                    Method.Get);
-            RestResponse response = await client.ExecuteAsync(request);
-
-            var report = JsonConvert.DeserializeObject<List<Sale>>(response.Content);
-
-            return report;
-
-        }
-
-        [HttpGet]
         [Route("GetReports")]
-        public async Task<List<ReportDetailByPeriod>> GetRep([FromRoute] string datefrom = "2022-01-01", [FromRoute] string dateto = "2022-01-20")
+        public async Task<List<ReportDetailByPeriod>> GetReports([FromRoute] string datefrom = "2022-01-01", [FromRoute] string dateto = "2022-01-20")
         {
             var client =
                 new RestClient(
@@ -105,6 +102,10 @@ namespace ReportsAPI.Controllers
                     Method.Get);
             RestResponse response = await client.ExecuteAsync(request);
 
+            if (response.StatusCode != HttpStatusCode.OK) {
+                Console.WriteLine("ERROR: " + response.StatusDescription);
+            }
+
             var report = JsonConvert.DeserializeObject<List<ReportDetailByPeriod>>(response.Content);
 
             return report;
@@ -114,7 +115,7 @@ namespace ReportsAPI.Controllers
         [Route("SaveReports")]
         public async Task SaveReports()
         {
-            var reports = await GetRep();
+            var reports = await GetReports();
 
             foreach (var report in reports)
             {
@@ -140,8 +141,10 @@ namespace ReportsAPI.Controllers
             request.Timeout = 1000000;
             RestResponse response = await client.ExecuteAsync(request);
 
-            Console.WriteLine(response.StatusDescription);
-            Console.WriteLine(response.Content);
+            if (response.StatusCode != HttpStatusCode.OK) {
+                Console.WriteLine("ERROR: " + response.StatusDescription);
+            }
+
             var report = JsonConvert.DeserializeObject<List<OrderResult>>(response.Content);
 
             return report;
@@ -159,6 +162,16 @@ namespace ReportsAPI.Controllers
             }
 
             await _db.SaveChangesAsync();
+        }
+
+        [HttpPost]
+        [Route("SaveAll")]
+        public async Task SaveAllAsync()
+        {
+            await SaveIncomes();
+            await SaveSales();
+            await SaveReports();
+            await SaveOrders();
         }
     }
 }
