@@ -10,11 +10,14 @@ namespace Entities.DataContexts
             Database.EnsureCreated();
         }
 
+        // WB
         public DbSet<Sale> Sales { get; set; }
         public DbSet<Income> Incomes { get; set; }
         public DbSet<Marketplace> Marketplaces { get; set; }
         public DbSet<ReportDetailByPeriod>ReportDetailByPeriods { get; set; }
+        public DbSet<ReportsAPI.Models.OrderResult> WBOrders { get; set; }
 
+        //--------------------------------------
         // Ozon stuff
         public DbSet<Item> Items { get; set; }
         public DbSet<Posting> Postings { get; set; }
