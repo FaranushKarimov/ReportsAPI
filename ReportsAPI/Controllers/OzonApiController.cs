@@ -1,3 +1,4 @@
+using System;
 using Contracts;
 using RestSharp;
 using System.Linq;
@@ -7,7 +8,6 @@ using Entities.DataContexts;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System;
 
 namespace ReportsAPI.Controllers
 {
@@ -28,6 +28,8 @@ namespace ReportsAPI.Controllers
         [Route("GetTransaction")]
         public async Task<TransactionResult> GetTransactionsAsync(string from = "2021-11-01T00:00:00.000Z", string to = "2021-11-02T00:00:00.000Z", string transaction_type = "all")
         {
+            // from = 
+
             var client = new RestClient("https://api-seller.ozon.ru/v3/finance/transaction/list");
             var request = new RestRequest("https://api-seller.ozon.ru/v3/finance/transaction/list", Method.Post);
 

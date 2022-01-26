@@ -10,6 +10,7 @@ namespace Entities.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [JsonIgnore]
         public int Id { get; set; }
         [JsonPropertyName("IncomeId")]
         public int IncomeId { get; set; }
