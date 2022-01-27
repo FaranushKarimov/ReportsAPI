@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Repositories\Repositories.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="RestSharp" Version="107.1.2" />
+  </ItemGroup>
+
 </Project>
