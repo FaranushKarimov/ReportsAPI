@@ -1,6 +1,6 @@
 using System;
-using Contracts;
 using RestSharp;
+using System.Net;
 using System.Linq;
 using Entities.Models;
 using Newtonsoft.Json;
@@ -8,7 +8,7 @@ using Entities.DataContexts;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Net;
+using Microsoft.Extensions.Logging;
 
 namespace ReportsAPI.Controllers
 {
@@ -17,9 +17,9 @@ namespace ReportsAPI.Controllers
     public class OzonApiController : ControllerBase
     {
         private readonly DataContext _db;
-        private readonly ILoggerManager _logger;
+        private readonly ILogger<OzonApiController> _logger;
 
-        public OzonApiController(DataContext db, ILoggerManager logger)
+        public OzonApiController(DataContext db, ILogger<OzonApiController> logger)
         {
             _db = db;
             _logger = logger;
@@ -56,6 +56,8 @@ namespace ReportsAPI.Controllers
             if (response.StatusCode != HttpStatusCode.OK) {
                 throw new Exception(response.StatusDescription);
             }
+
+            _logger.LogCritical("GetTransaction:" + response.StatusDescription);
 
             var report = JsonConvert.DeserializeObject<TransactionResult>(response.Content);
             return report;
