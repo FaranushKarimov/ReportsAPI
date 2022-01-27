@@ -1,10 +1,9 @@
-
 using Entities.DataContexts;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+
 namespace ReportsAPI
 {
     public class Program
