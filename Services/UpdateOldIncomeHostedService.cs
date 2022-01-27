@@ -1,11 +1,9 @@
-﻿using Contracts.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Threading;
+using Contracts.Services;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Services
 {
@@ -21,9 +19,10 @@ namespace Services
         {
             while (true)
             {
-                await Task.Delay(TimeSpan.FromDays(1));
+                await Task.Delay(TimeSpan.FromSeconds(1));
                 using var scope = _serviceProvider.CreateScope();
                 var incomeService = scope.ServiceProvider.GetRequiredService<IIncomeService>();
+
                 await incomeService.UpdateAsync();
             }
         }

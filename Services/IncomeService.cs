@@ -1,23 +1,23 @@
-﻿using Contracts.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using RestSharp;
+using Contracts.Services;
 using System.Threading.Tasks;
-using RestSharp;
 
 namespace Services
 {
     public class IncomeService : IIncomeService
     {
-        public async Task UpdateAsync()
-        {
-            var client = new RestClient($"https://localhost:5001/Wildberries/GetIncomes");
-            var request = new RestRequest($"https://localhost:5001/Wildberries/GetIncomes", Method.Get);
-
+        public async Task FetchOzon() {
+            var client = new RestClient("https://localhost:5001/");
+            var request = new RestRequest("https://localhost:5001/ozon/GetTransaction", Method.Get);
             RestResponse response = await client.ExecuteAsync(request);
 
-            Console.WriteLine(response.ErrorMessage);
-            Console.WriteLine(response.StatusDescription);
+            System.Console.WriteLine(response.ErrorException);
+            System.Console.WriteLine(response.StatusDescription);
+        }
+
+        public async Task UpdateAsync()
+        {
+            // await FetchOzon();
         }
     }
 }
