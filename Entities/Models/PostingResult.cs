@@ -126,7 +126,7 @@ namespace Entities.Models
         //public List<object> additional_data { get; set; }
     }
 
-    public class PostingResult
+    public class PostingResults
     {
         [Key]
         [JsonIgnore]

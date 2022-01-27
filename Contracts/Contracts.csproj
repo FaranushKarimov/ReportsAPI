@@ -1,7 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
+  <ItemGroup>
+    <PackageReference Include="RestSharp" Version="107.1.2" />
+    <ProjectReference Include="..\Entities\Entities.csproj" />
+  </ItemGroup>
 </Project>

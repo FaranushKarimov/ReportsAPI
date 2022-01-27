@@ -35,7 +35,7 @@ namespace Entities.DataContexts
         public DbSet<ItemServices> ItemServices { get; set; }
         public DbSet<AnalyticsData> AnalyticsDatas { get; set; }
         public DbSet<FinancialData> FinancialDatas { get; set; }
-        public DbSet<PostingResult> PostingResults { get; set; }
+        public DbSet<PostingResults> PostingResults { get; set; }
         public DbSet<PostingServices> PostingServices { get; set; }
         public DbSet<PostingResultResult> PostingResultResults { get; set; }
 

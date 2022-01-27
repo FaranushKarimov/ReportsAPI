@@ -1,13 +1,7 @@
 using System;
-using RestSharp;
-using System.Net;
-using System.Linq;
 using Entities.Models;
-using Newtonsoft.Json;
-using Entities.DataContexts;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 
 namespace ReportsAPI.Controllers
@@ -16,76 +10,30 @@ namespace ReportsAPI.Controllers
     [Route("ozon")]
     public class OzonApiController : ControllerBase
     {
-        private readonly DataContext _db;
         private readonly ILogger<OzonApiController> _logger;
+        private readonly IOzonReportsService _ozonService;
 
-        public OzonApiController(DataContext db, ILogger<OzonApiController> logger)
+        public OzonApiController(ILogger<OzonApiController> logger, IOzonReportsService ozonService)
         {
-            _db = db;
             _logger = logger;
+            _ozonService = ozonService;
         }
 
         [HttpGet]
         [Route("GetTransaction")]
         public async Task<TransactionResult> GetTransactionsAsync(string from = "2021-11-01T00:00:00.000Z", string to = "2021-11-02T00:00:00.000Z", string transaction_type = "all")
         {
-            var client = new RestClient("https://api-seller.ozon.ru/v3/finance/transaction/list");
-            var request = new RestRequest("https://api-seller.ozon.ru/v3/finance/transaction/list", Method.Post);
-
-            request.AddHeader("Client-Id", Credentials.CLIENT_ID);
-            request.AddHeader("Api-Key", Credentials.API_KEY);
-            request.AddHeader("Content-Type", "application/json");
-            request.AddJsonBody(new
-            {
-                filter = new
-                {
-                    date = new
-                    {
-                        from = from,
-                        to = to
-                    },
-                    posting_number = "",
-                    transaction_type = transaction_type
-                },
-                page = 1,
-                page_size = 1000,
-            });
-
-            RestResponse response = await client.ExecuteAsync(request);
-
-            if (response.StatusCode != HttpStatusCode.OK) {
-                throw new Exception(response.StatusDescription);
-            }
-
-            _logger.LogCritical("GetTransaction:" + response.StatusDescription);
-
-            var report = JsonConvert.DeserializeObject<TransactionResult>(response.Content);
-            return report;
+            //Console.WriteLine(await _ozonService.GetTransactionsAsync());
+            var result = await _ozonService.GetTransactionsAsync();
+            return result;
         }
 
         [HttpPost]
         [Route("SaveTransaction")]
         public async Task<IActionResult> SaveTransaction()
         {
-            var report = await GetTransactionsAsync();
-            var ops = new List<Operation>();
-            foreach (var op in report.Result.Operations)
-            {
-                // Don't duplicate
-                // TODO: Make this faster
-                bool is_present = _db.Operations.Any(x => x.operation_id == op.operation_id);
-                if (!is_present)
-                    ops.Add(op);
-            }
-            try
-            {
-                await _db.Operations.AddRangeAsync(ops);
-                await _db.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _ozonService.GetTransactionsAsync();
+            await _ozonService.SaveTransactionAsync(result);
             return Ok();
         }
 
@@ -93,105 +41,31 @@ namespace ReportsAPI.Controllers
         [Route("GetStocks")]
         public async Task<StockResults> GetStocksAsync()
         {
-            var client = new RestClient("https://api-seller.ozon.ru/v1/analytics/stock_on_warehouses");
-            var request = new RestRequest("https://api-seller.ozon.ru/v1/analytics/stock_on_warehouses", Method.Post);
-
-            request.AddHeader("Client-Id", Credentials.CLIENT_ID);
-            request.AddHeader("Api-Key", Credentials.API_KEY);
-            request.AddHeader("Content-Type", "application/json");
-            request.AddJsonBody(new
-            {
-                limit = 1000000,
-                offset = 0
-            });
-
-            RestResponse response = await client.ExecuteAsync(request);
-
-            if (response.StatusCode != HttpStatusCode.OK) {
-                throw new Exception(response.StatusDescription);
-            }
-
-            var report = JsonConvert.DeserializeObject<StockResults>(response.Content);
-
-            return report;
+            return await _ozonService.GetStocksAsync();
         }
+
         [HttpPost]
         [Route("SaveStocks")]
         public async Task<IActionResult> SaveStocksAsync()
         {
-            var report = await GetStocksAsync();
-
-            try
-            {
-                await _db.StockResults.AddRangeAsync(report);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            await _db.SaveChangesAsync();
+            var result = await _ozonService.GetStocksAsync();
+            await _ozonService.SaveStocksAsync(result);
             return Ok();
         }
 
         [HttpGet]
         [Route("GetPostings")]
-        public async Task<PostingResult> GetPostings(string dir = "ASC",
-            string since = "2021-09-01T00:00:00.000Z",
-            string to = "2021-11-17T10:44:12.828Z",
-            string status = "",
-            int limit = 1000,
-            int offset = 0,
-            bool translit = true)
+        public async Task<PostingResults> GetPostings()
         {
-            var client = new RestClient("https://api-seller.ozon.ru/v2/posting/fbo/list");
-            var request = new RestRequest("https://api-seller.ozon.ru/v2/posting/fbo/list", Method.Post);
-
-            request.AddHeader("Client-Id", Credentials.CLIENT_ID);
-            request.AddHeader("Api-Key", Credentials.API_KEY);
-            request.AddHeader("Content-Type", "application/json");
-            request.AddJsonBody(new
-            {
-                dir = "",
-                filter = new
-                {
-                    since = since,
-                    status = status,
-                    to = to,
-                },
-                limit = limit,
-                offset = offset,
-                translit = translit,
-                with = new
-                {
-                    analytics_data = true,
-                    financial_data = true,
-                },
-            });
-
-            RestResponse response = await client.ExecuteAsync(request);
-            if (response.StatusCode != HttpStatusCode.OK) {
-                throw new Exception(response.StatusDescription);
-            }
-            var report = JsonConvert.DeserializeObject<PostingResult>(response.Content);
-
-            return report;
+            return await _ozonService.GetPostingsAsync();
         }
 
         [HttpPost]
         [Route("SavePostings")]
         public async Task<IActionResult> SavePostings()
         {
-            var report = await GetPostings();
-
-            try
-            {
-                await _db.PostingResults.AddRangeAsync(report);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            await _db.SaveChangesAsync();
+            var results = await _ozonService.GetPostingsAsync();
+            await _ozonService.SavePostingsAsync(results);
             return Ok();
         }
 
@@ -201,7 +75,6 @@ namespace ReportsAPI.Controllers
         {
             await SaveTransaction();
             await SaveStocksAsync();
-            await SavePostings();
         }
     }
 }
