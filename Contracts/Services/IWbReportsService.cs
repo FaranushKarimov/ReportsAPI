@@ -1,22 +1,22 @@
+using Entities.Models;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 public interface IWbReportsService {
     // Incomes
-    Task GetIncomes();
-    Task SaveIncomes();
+    Task<List<Income>> GetIncomesAsync();
+    Task SaveIncomesAsync(List<Income> result);
 
     // Sales
-    Task GetSales();
-    Task SaveSales();
+    Task<List<Sale>> GetSalesAsync();
+    Task SaveSalesAsync(List<Sale> result);
 
     // Reports
-    Task GetReports();
-    Task SaveReports();
+    Task<List<ReportDetailByPeriod>> GetReportsAsync();
+    Task SaveReportsAsync(List<ReportDetailByPeriod> result);
 
     // Orders
-    Task GetOrders();
-    Task SaveOrders();
-
-    Task SaveAll();
-    Task UpdateAll();
+    Task<List<OrderResult>> GetOrdersAsync();
+    Task SaveOrdersAsync(List<OrderResult> result);
 }
+

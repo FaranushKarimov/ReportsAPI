@@ -15,7 +15,7 @@ namespace Entities.DataContexts
         public DbSet<Income> Incomes { get; set; }
         public DbSet<Marketplace> Marketplaces { get; set; }
         public DbSet<ReportDetailByPeriod>ReportDetailByPeriods { get; set; }
-        public DbSet<ReportsAPI.Models.OrderResult> WBOrders { get; set; }
+        public DbSet<OrderResult> WBOrders { get; set; }
 
         //--------------------------------------
         // Ozon stuff

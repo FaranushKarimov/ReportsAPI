@@ -1,4 +1,3 @@
-using System;
 using Entities.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +40,8 @@ namespace ReportsAPI.Controllers
         [Route("GetStocks")]
         public async Task<StockResults> GetStocksAsync()
         {
-            return await _ozonService.GetStocksAsync();
+            var result = await _ozonService.GetStocksAsync();
+            return result;
         }
 
         [HttpPost]

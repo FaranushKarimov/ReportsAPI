@@ -1,5 +1,5 @@
-using System.Threading.Tasks;
 using Entities.Models;
+using System.Threading.Tasks;
 
 public interface IOzonReportsService {
     // Transactions
