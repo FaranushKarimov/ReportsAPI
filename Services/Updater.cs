@@ -17,13 +17,9 @@ namespace ReportsAPI.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (true)
-            {
-                await Task.Delay(TimeSpan.FromMinutes(5));
                 using var scope = _serviceProvider.CreateScope();
                 var WbService = scope.ServiceProvider.GetRequiredService<IWbReportsService>();
                 await WbService.UpdateAll();
-            }
         }
     }
 }
