@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using RestSharp;
 using Entities.Models;
 using Newtonsoft.Json;
