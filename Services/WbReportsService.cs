@@ -17,12 +17,15 @@ public class WbReportsService : IWbReportsService
 
     public async Task<List<Income>> GetIncomesAsync()
     {
+        Console.WriteLine("Getting Incomes...");
         var date = Uri.EscapeDataString((DateTime.Today.ToString("yyyy-MM-ddT00:00:00.000Z")));
 
         string baseUrl = $"https://suppliers-stats.wildberries.ru/api/v1/supplier/incomes?dateFrom={date}&key={Credentials.WB_API_KEY}";
         var client = new RestClient(baseUrl);
         var request = new RestRequest(baseUrl, Method.Get);
         RestResponse response = await client.ExecuteAsync(request);
+
+        Console.WriteLine($"--\n{response.StatusCode}: {response.StatusDescription}\n{response.Content}\n");
 
         var stock = JsonConvert.DeserializeObject<List<Income>>(response.Content);
 
@@ -31,6 +34,7 @@ public class WbReportsService : IWbReportsService
 
     public async Task<List<OrderResult>> GetOrdersAsync()
     {
+        Console.WriteLine("Getting orders...");
         string date = Uri.EscapeDataString((DateTime.Today.ToString("yyyy-MM-ddT00:00:00.000Z")));
 
         string baseUrl = $"https://suppliers-stats.wildberries.ru/api/v1/supplier/orders?dateFrom={date}&flag=0&key={Credentials.WB_API_KEY}";
@@ -41,12 +45,15 @@ public class WbReportsService : IWbReportsService
 
         RestResponse response = await client.ExecuteAsync(request);
 
+        Console.WriteLine($"--\n{response.StatusCode}: {response.StatusDescription}\n{response.Content}\n");
+
         var report = JsonConvert.DeserializeObject<List<OrderResult>>(response.Content);
         return report;
     }
 
     public async Task<List<ReportDetailByPeriod>> GetReportsAsync()
     {
+        Console.WriteLine("Getting reports");
         string datefrom = Uri.EscapeDataString((DateTime.Today.AddDays(-15).ToString("yyyy-MM-ddT00:00:00.000Z")));
         string dateto = Uri.EscapeDataString((DateTime.Today.ToString("yyyy-MM-ddT00:00:00.000Z")));
 
@@ -55,7 +62,7 @@ public class WbReportsService : IWbReportsService
         var client = new RestClient(baseUrl);
         var request = new RestRequest(baseUrl, Method.Get);
         RestResponse response = await client.ExecuteAsync(request);
-
+        Console.WriteLine($"--\n{response.StatusCode}: {response.StatusDescription}\n{response.Content}\n");
         var report = JsonConvert.DeserializeObject<List<ReportDetailByPeriod>>(response.Content);
 
         return report;
@@ -63,6 +70,7 @@ public class WbReportsService : IWbReportsService
 
     public async Task<List<Sale>> GetSalesAsync()
     {
+        Console.WriteLine("Getting sales");
         var datefrom = Uri.EscapeDataString((DateTime.Today.ToString("yyyy-MM-ddTHH:ss:00.000Z")));
         //var datefrom = "2022-01-01T21:00:00.000Zl";
 
@@ -70,6 +78,8 @@ public class WbReportsService : IWbReportsService
         var client = new RestClient(baseUrl);
         var request = new RestRequest(baseUrl, Method.Get);
         RestResponse response = await client.ExecuteAsync(request);
+
+        Console.WriteLine($"--\n{response.StatusCode}: {response.StatusDescription}\n{response.Content}\n");
 
         var report = JsonConvert.DeserializeObject<List<Sale>>(response.Content);
 
@@ -97,8 +107,17 @@ public class WbReportsService : IWbReportsService
         await _db.SaveChangesAsync();
     }
 
-    public Task SaveSalesAsync(List<Sale> result)
+    public async Task SaveSalesAsync(List<Sale> result)
     {
-        throw new NotImplementedException();
+        await _db.Sales.AddRangeAsync(result);
+    }
+
+    public async Task UpdateAll() {
+        Console.WriteLine("Satarted global update !");
+        await SaveSalesAsync(await GetSalesAsync());
+        await SaveOrdersAsync(await GetOrdersAsync());
+        await SaveIncomesAsync(await GetIncomesAsync());
+        await SaveReportsAsync(await GetReportsAsync());
+        Console.WriteLine("Ended global update !");
     }
 }

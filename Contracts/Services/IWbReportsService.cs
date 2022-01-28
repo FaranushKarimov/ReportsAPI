@@ -18,5 +18,7 @@ public interface IWbReportsService {
     // Orders
     Task<List<OrderResult>> GetOrdersAsync();
     Task SaveOrdersAsync(List<OrderResult> result);
+
+    Task UpdateAll();
 }
 
