@@ -17,9 +17,17 @@ namespace ReportsAPI.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            while (true) {
                 using var scope = _serviceProvider.CreateScope();
                 var WbService = scope.ServiceProvider.GetRequiredService<IWbReportsService>();
+                var OzonService = scope.ServiceProvider.GetRequiredService<IOzonReportsService>();
+                // Update Wildberries
                 await WbService.UpdateAll();
+                // Update Ozon
+                await OzonService.UpdateAll();
+
+                await Task.Delay(TimeSpan.FromDays(1));
+            }
         }
     }
 }

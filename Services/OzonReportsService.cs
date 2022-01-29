@@ -20,10 +20,11 @@ public class OzonReportsService : IOzonReportsService
 
     public async Task<PostingResults> GetPostingsAsync()
     {
+        Console.WriteLine("Getting Ozon Postings...");
         // TODO: Refactor this
         string dir = "ASC";
-        string since = Uri.EscapeDataString((DateTime.Today.AddDays(-1).ToString("yyyy-MM-ddT00:00:00.000Z")));
-        string to = Uri.EscapeDataString((DateTime.Today.ToString("yyyy-MM-ddT00:00:00.000Z")));
+        string since = (DateTime.Today.AddDays(-1).ToString("yyyy-MM-ddT00:00:00.000Z"));
+        string to = (DateTime.Today.ToString("yyyy-MM-ddT00:00:00.000Z"));
         string status = "";
         int limit = 1000;
         int offset = 0;
@@ -57,10 +58,8 @@ public class OzonReportsService : IOzonReportsService
         });
 
         RestResponse response = await client.ExecuteAsync(request);
-        if (response.StatusCode != HttpStatusCode.OK)
-        {
-            throw new Exception(response.StatusDescription);
-        }
+        Console.WriteLine($"--\n{response.StatusCode}: {response.StatusDescription}\n{response.Content}\n");
+
         var report = JsonConvert.DeserializeObject<PostingResults>(response.Content);
 
         return report;
@@ -73,7 +72,7 @@ public class OzonReportsService : IOzonReportsService
 
     public async Task<StockResults> GetStocksAsync()
     {
-        Console.WriteLine("Getting stocks...");
+        Console.WriteLine("Getting ozon stocks...");
 
         const string BaseUrl = "https://api-seller.ozon.ru/v1/analytics/stock_on_warehouses";
         var client = new RestClient(BaseUrl);
@@ -106,6 +105,7 @@ public class OzonReportsService : IOzonReportsService
 
     public async Task<TransactionResult> GetTransactionsAsync()
     {
+        Console.WriteLine("Getting Ozon transactions ...");
         const string Resource = "https://api-seller.ozon.ru/v3/finance/transaction/list";
         var client = new RestClient(Resource);
         var request = new RestRequest(Resource, Method.Post);
@@ -119,8 +119,8 @@ public class OzonReportsService : IOzonReportsService
             {
                 date = new
                 {
-                    from = Uri.EscapeDataString((DateTime.Today.AddDays(-15).ToString("yyyy-MM-ddT00:00:00.000Z"))),
-                    to = Uri.EscapeDataString((DateTime.Today.ToString("yyyy-MM-ddT00:00:00.000Z")))
+                    from = (DateTime.Today.AddDays(-15).ToString("yyyy-MM-ddT00:00:00.000Z")),
+                    to = (DateTime.Today.ToString("yyyy-MM-ddT00:00:00.000Z"))
                 },
                 posting_number = "",
                 transaction_type = "all"
@@ -131,10 +131,7 @@ public class OzonReportsService : IOzonReportsService
 
         RestResponse response = await client.ExecuteAsync(request);
 
-        if (response.StatusCode != HttpStatusCode.OK)
-        {
-            throw new Exception(response.StatusDescription + "\n" + response.ErrorMessage);
-        }
+        Console.WriteLine($"--\n{response.StatusCode}: {response.StatusDescription}\n{response.Content}\n");
 
         var report = JsonConvert.DeserializeObject<TransactionResult>(response.Content);
         return report;
@@ -155,13 +152,15 @@ public class OzonReportsService : IOzonReportsService
         await _db.SaveChangesAsync();
     }
 
-    public Task SaveAll()
+    public async Task SaveAll()
     {
-        throw new System.NotImplementedException();
+        await SaveTransactionAsync(await GetTransactionsAsync());
+        await SavePostingsAsync(await GetPostingsAsync());
+        await SaveStocksAsync(await GetStocksAsync());
     }
 
-    public Task UpdateAll()
+    public async Task UpdateAll()
     {
-        throw new System.NotImplementedException();
+        await SaveAll();
     }
 }
