@@ -40,12 +40,11 @@ public class WbReportsService : IWbReportsService
         string baseUrl = $"https://suppliers-stats.wildberries.ru/api/v1/supplier/orders?dateFrom={date}&flag=0&key={Credentials.WB_API_KEY}";
         var client = new RestClient(baseUrl);
         var request = new RestRequest(baseUrl, Method.Get);
-        // TODO: REMOVE THIS OR FIND A SOLUTION
-        request.Timeout = 1000000;
 
         RestResponse response = await client.ExecuteAsync(request);
 
         Console.WriteLine($"--\n{response.StatusCode}: {response.StatusDescription}\n{response.Content}\n");
+        Console.WriteLine($"{response.ErrorMessage}");
 
         var report = JsonConvert.DeserializeObject<List<OrderResult>>(response.Content);
         return report;
@@ -63,6 +62,7 @@ public class WbReportsService : IWbReportsService
         var request = new RestRequest(baseUrl, Method.Get);
         RestResponse response = await client.ExecuteAsync(request);
         Console.WriteLine($"--\n{response.StatusCode}: {response.StatusDescription}\n{response.Content}\n");
+        Console.WriteLine($"{response.ErrorMessage}");
         var report = JsonConvert.DeserializeObject<List<ReportDetailByPeriod>>(response.Content);
 
         return report;
@@ -113,11 +113,11 @@ public class WbReportsService : IWbReportsService
     }
 
     public async Task UpdateAll() {
-        Console.WriteLine("Satarted global update !");
+        Console.WriteLine("Satarted Wb update !");
         await SaveSalesAsync(await GetSalesAsync());
         await SaveOrdersAsync(await GetOrdersAsync());
         await SaveIncomesAsync(await GetIncomesAsync());
         await SaveReportsAsync(await GetReportsAsync());
-        Console.WriteLine("Ended global update !");
+        Console.WriteLine("Ended Wb update !");
     }
 }

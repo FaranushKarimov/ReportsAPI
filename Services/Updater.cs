@@ -18,6 +18,7 @@ namespace ReportsAPI.Services
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (true) {
+                Console.WriteLine("Started worker !");
                 using var scope = _serviceProvider.CreateScope();
                 var WbService = scope.ServiceProvider.GetRequiredService<IWbReportsService>();
                 var OzonService = scope.ServiceProvider.GetRequiredService<IOzonReportsService>();
@@ -26,6 +27,7 @@ namespace ReportsAPI.Services
                 // Update Ozon
                 await OzonService.UpdateAll();
 
+                Console.WriteLine("Enderd worker cycle !");
                 await Task.Delay(TimeSpan.FromDays(1));
             }
         }

@@ -154,9 +154,11 @@ public class OzonReportsService : IOzonReportsService
 
     public async Task SaveAll()
     {
+        Console.WriteLine("Started Ozon global update");
         await SaveTransactionAsync(await GetTransactionsAsync());
         await SavePostingsAsync(await GetPostingsAsync());
         await SaveStocksAsync(await GetStocksAsync());
+        Console.WriteLine("Ended Ozon global update");
     }
 
     public async Task UpdateAll()
