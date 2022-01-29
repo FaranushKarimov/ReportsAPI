@@ -21,7 +21,7 @@ namespace Entities.Models
         public decimal discountPercent { get; set; }
         public string warehouseName { get; set; }
         public string oblast { get; set; }
-        public int incomeID { get; set; }
+        public string incomeID { get; set; }
         public long odid { get; set; }
         public int nmId { get; set; }
         public string subject { get; set; }
