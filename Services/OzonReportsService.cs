@@ -1,13 +1,11 @@
 ﻿using System;
 using RestSharp;
-using System.Net;
 using System.Linq;
 using Entities.Models;
 using Newtonsoft.Json;
 using Entities.DataContexts;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
 
 public class OzonReportsService : IOzonReportsService
 {
@@ -164,5 +162,26 @@ public class OzonReportsService : IOzonReportsService
     public async Task UpdateAll()
     {
         await SaveAll();
+    }
+
+    // Return the first with matching posting_number
+    public PostingResultResult GetPosting(string id)
+    {
+        Console.WriteLine("XXX");
+        Console.WriteLine(id);
+        var result = _db.PostingResults.SelectMany(x => x.result).Where(x => x.posting_number == id).FirstOrDefault();
+        Console.WriteLine(result.posting_number);
+        return result;
+    }
+
+    public async Task SavePostingAsync(string id)
+    {
+        var post = GetPosting(id);
+        var result = new PostingResults();
+        var list = new List<PostingResultResult>();
+        list.Add(post);
+        result.result = list;
+
+        await _db.PostingResults.AddAsync(result);
     }
 }

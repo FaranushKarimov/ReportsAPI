@@ -68,6 +68,17 @@ namespace ReportsAPI.Controllers
             await _ozonService.SavePostingsAsync(results);
             return Ok();
         }
+        [HttpGet]
+        [Route("GetSpecificPosting")]
+        public PostingResultResult GetSpecificPosting(string id)
+        {
+            return _ozonService.GetPosting(id);
+        }
+        [HttpPost]
+        [Route("SaveSpecificPosting")]
+        public async Task SavePosting(string id) {
+            await _ozonService.SavePostingAsync(id);
+        }
 
         [HttpPost]
         [Route("SaveAll")]

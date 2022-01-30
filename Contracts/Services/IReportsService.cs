@@ -10,9 +10,14 @@ public interface IOzonReportsService {
     Task<StockResults> GetStocksAsync();
     Task SaveStocksAsync(StockResults result);
 
+    // Posting
+    PostingResultResult GetPosting(string id);
+    Task SavePostingAsync(string id);
+
     // Postings
     Task<PostingResults> GetPostingsAsync();
     Task SavePostingsAsync(PostingResults results);
+
 
     Task SaveAll();
     Task UpdateAll();
